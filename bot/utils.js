@@ -1,5 +1,11 @@
 const logger = require('../api/logger')
 
+const cfg = {
+  url: {
+    contacts: 'https://www.linkedin.com/search/results/people/?facetNetwork=%5B%22F%22%5D&origin=CLUSTER_EXPANSION'
+  }
+}
+
 const closeBrowser = async (browser) => { await browser.close() }
 const closePage = async (page) => { await page.close() }
 const browserConfig = () => {
@@ -22,10 +28,11 @@ const browserConfig = () => {
   if (env === 'local') return browser_cfg.local
   else return browser_cfg.prod
 }
-const cfg = {
-  url: {
-    contacts: 'https://www.linkedin.com/search/results/people/?facetNetwork=%5B%22F%22%5D&origin=CLUSTER_EXPANSION'
-  }
+
+const delay = timeout => {
+  return new Promise(resoolve => {
+    setTimeout(resoolve(), timeout);
+  })
 }
 
-module.exports = { closeBrowser, closePage, browserConfig, cfg }
+module.exports = { closeBrowser, closePage, browserConfig, cfg, delay }

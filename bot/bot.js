@@ -1,5 +1,5 @@
 const { cfg: { url: { contacts } } } = require('./utils')
-const el = require('./elements')
+const { delay } = require('./utils')
 const logger = require('../api/logger')
 
 const openContacts = async (page) => {
@@ -7,7 +7,16 @@ const openContacts = async (page) => {
   logger.info('Contacts opened')
 }
 
-const getUsers = async (page) => [...await page.$$('div div[role=main] div div ul li')]
+const scrollToBottomOfThePage = async (page) => {
+  await page.evaluate(() => window.scrollTo(0,document.body.scrollHeight))
+  const time = 60 * 1000
+  logger.info(`Wait ${time / (60 * 1000)} mins`)
+  await page.waitFor(time)
+}
+
+const getUsers = async (page) => {
+  return [...await page.$$('div div[role=main] div div ul li')]
+}
 
 const mapUsers = async (page) => {
   const users = await getUsers(page)
@@ -18,16 +27,18 @@ const mapUsers = async (page) => {
     const fullName = userNameAndContactLvl?.split(' ').slice(0, 2).join()
     const contactLvl = userNameAndContactLvl?.split(' ').slice(2, userNameAndContactLvl?.split(' ').length)[1]
     const localization = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[2]?.innerText, user)
-    const msgButton = await page.evaluate(user => user?.children[0]?.children[0]?.children[2]?.children[0]?.children[0]?.children[0], user)
+    const profileHref = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[0]?.getAttribute('href'), user)
     
-    const userObj = {
-      fullName,
-      contactLvl,
-      localization,
-      msgButton
+    if (fullName, contactLvl, localization, profileHref) {
+      const userObj = {
+        fullName,
+        contactLvl,
+        localization,
+        profileHref
+      }
+  
+      selectedUsers.push(userObj)
     }
-
-    selectedUsers.push(userObj)
   }
   
   return selectedUsers
@@ -35,7 +46,9 @@ const mapUsers = async (page) => {
 
 const runBot = async (page) => {
   await openContacts(page)
-  await selectUsers(page)
+  await scrollToBottomOfThePage(page)
+  const users = await mapUsers(page)
+  console.log(users);
 }
 
 module.exports = runBot
