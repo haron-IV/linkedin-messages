@@ -58,6 +58,10 @@ export default {
         console.log(res);
         if(res.status === 200) runResponse.value.info = res.data.msg
         else runResponse.value.err = res.data.msg
+        setTimeout(() => {
+          runResponse.value.info = ''
+          runResponse.value.err = ''
+        }, 15000);
       })
       .catch(err => { runResponse.value.err = err.data.msg }
       )

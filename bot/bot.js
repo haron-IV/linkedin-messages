@@ -7,20 +7,35 @@ const openContacts = async (page) => {
   logger.info('Contacts opened')
 }
 
-const getUsers = async (page) => {
-  const users = await page.evaluate(() => {
+const getUsers = async (page) => [...await page.$$('div div[role=main] div div ul li')]
+
+const mapUsers = async (page) => {
+  const users = await getUsers(page)
+  const selectedUsers = []
+
+  for (const user of users) {
+    const userNameAndContactLvl = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[0]?.innerText, user)
+    const fullName = userNameAndContactLvl?.split(' ').slice(0, 2).join()
+    const contactLvl = userNameAndContactLvl?.split(' ').slice(2, userNameAndContactLvl?.split(' ').length)[1]
+    const localization = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[2]?.innerText, user)
+    const msgButton = await page.evaluate(user => user?.children[0]?.children[0]?.children[2]?.children[0]?.children[0]?.children[0], user)
     
-    // const userNames = Array.from(document.querySelectorAll('div[role=main] div div ul li'), elem => elem.children[0] )
-    
-    return Array.from(document.querySelectorAll('div[role=main] div div ul li'), elem => elem.children[0] )
-  })
-  console.log(users);
-  console.log(users[0].children[0].children[1].children[0]);
+    const userObj = {
+      fullName,
+      contactLvl,
+      localization,
+      msgButton
+    }
+
+    selectedUsers.push(userObj)
+  }
+  
+  return selectedUsers
 }
 
 const runBot = async (page) => {
   await openContacts(page)
-  await getUsers(page)
+  await selectUsers(page)
 }
 
 module.exports = runBot
