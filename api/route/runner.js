@@ -1,5 +1,4 @@
 const express = require('express')
-const start = require('../../bot/index')
 const router = express.Router()
 const startBot = require('../../bot/index')
 const logger = require('../logger')

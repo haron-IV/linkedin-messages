@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '../.env'})
 const puppeteer = require('puppeteer')
 const logger = require('../api/logger')
-const { closeBrowser, browserConfig } = require('./utils')
+const { browserConfig } = require('./utils')
 const login = require('./login')
 const runBot = require('./bot')
 

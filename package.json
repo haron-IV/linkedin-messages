@@ -13,5 +13,10 @@
     "mongoose": "^5.10.14",
     "puppeteer": "^5.4.1",
     "winston": "^3.3.3"
+  },
+  "scripts": {
+    "bot": "nodemon index.js",
+    "front": "yarn --cwd ./gui serve",
+    "dev": "yarn bot & yarn front"
   }
 }
