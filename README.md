@@ -15,8 +15,9 @@ todo:
   - configure puppeter ✅
   - open chromium ✅
   - login page ✅
-  - go to contact
-  - user target selector
+  - go to contact ✅
+  - check gender on selecting msg
+  - user target selector 
   - type & send message
   - create config
 
@@ -26,7 +27,7 @@ todo:
 * Interface
   * add auth to api page ✅
     - save api auth key as cookie and check it everytime on open 
-  * add login page
+  * add login page ✅
     - username, login to linked in ✅
   * add bot interface
     - pole wyboru wysylaj do: plec, woje., wczesniejszy brak kontaktu
