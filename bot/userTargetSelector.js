@@ -45,7 +45,8 @@ const getUsersFromPage = async (page) => {
 
 const selectUserToSendMsg = async (page) => {
   const users = await getUsersFromPage(page)
-  console.log(users);
+  // select users to send msg and return it as array
+  // when array is empty return false then go to the next page
 }
 
 module.exports = selectUserToSendMsg

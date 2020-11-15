@@ -6,6 +6,12 @@
   </div>
 </template>
 
+<script>
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+export default {}
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -13,19 +19,12 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  padding: 2rem;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
+a {
   font-weight: bold;
   color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
 }
 
 .fade-enter-active, .fade-leave-active {

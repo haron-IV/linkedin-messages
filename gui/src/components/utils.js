@@ -7,5 +7,11 @@ const saveUserCred = (user) => {
   localStorage.setItem('user', JSON.stringify(user))
 }
 const getUserCred = () => JSON.parse(localStorage.getItem('user'))
+const createLog = ( type, msg ) => {
+  return {
+    type,
+    msg
+  }
+}
 
-export { getCookie, saveUserCred, getUserCred, api_url }
+export { getCookie, saveUserCred, getUserCred, api_url, createLog }
