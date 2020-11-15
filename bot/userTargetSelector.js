@@ -1,5 +1,7 @@
+const axios = require('axios')
+const deburr = require('lodash.deburr')
 const logger = require('../api/logger')
-const {cfg: { waitTime } } = require('./utils')
+const {cfg: { waitTime }, extractNameFromFullName } = require('./utils')
 
 const scrollToBottomOfThePage = async (page) => {
   await page.evaluate(() => window.scrollTo(0,document.body.scrollHeight))
@@ -17,17 +19,23 @@ const mapUsers = async (page) => {
 
   for (const user of users) {
     const userNameAndContactLvl = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[0]?.innerText, user)
-    const fullName = userNameAndContactLvl?.split(' ').slice(0, 2).join()
+    const fullName = deburr(userNameAndContactLvl?.split(' ').slice(0, 2).join())
     const contactLvl = userNameAndContactLvl?.split(' ').slice(2, userNameAndContactLvl?.split(' ').length)[1]
     const localization = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[2]?.innerText, user)
     const profileHref = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[0]?.getAttribute('href'), user)
-    
+    let gender = null;
+    await axios.get(`https://api.genderize.io/?name=${extractNameFromFullName(fullName)}`).then(res => {
+      gender = res.data.gender
+      console.log(res.data.gender);
+    })
+
     if (fullName, contactLvl, localization, profileHref) {
       const userObj = {
         fullName,
         contactLvl,
         localization,
-        profileHref
+        profileHref,
+        gender
       }
   
       selectedUsers.push(userObj)
@@ -45,6 +53,7 @@ const getUsersFromPage = async (page) => {
 
 const selectUserToSendMsg = async (page) => {
   const users = await getUsersFromPage(page)
+  console.log(users);
   // select users to send msg and return it as array
   // when array is empty return false then go to the next page
 }

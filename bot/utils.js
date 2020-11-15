@@ -36,4 +36,6 @@ const delay = timeout => {
   })
 }
 
-module.exports = { closeBrowser, closePage, browserConfig, cfg, delay }
+const extractNameFromFullName = (fullName) => fullName?.split(',')[0] ? fullName?.split(',')[0] : null
+
+module.exports = { closeBrowser, closePage, browserConfig, cfg, delay, extractNameFromFullName }

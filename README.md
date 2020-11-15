@@ -8,6 +8,7 @@ todo:
   - add route for start bot ✅
   - add route for stop bot
   - add route to check bot status
+  - add collecting logs for get it from front
 
 
 

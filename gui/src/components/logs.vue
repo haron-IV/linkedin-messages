@@ -1,22 +1,24 @@
 <template>
   <div class="logs">
-    <div class="logs__wrap" v-if="logs.length > 0">
+    <div class="logs__wrap" id="logs" v-if="logs.length > 0">
       <div
         class="log"
         :class="getLogClass(log)"
         v-for="(log, i) in logs"
         :key="i">
         {{ log.msg }}
+        <span>{{log.time}}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from '@vue/composition-api'
+import { computed, watch } from '@vue/composition-api'
 export default {
   setup(_, {root: { $store }}) {
     const logs = computed(() => $store.getters['getLogs'])
+    watch(logs, () => { document.querySelector('#logs').scrollTop = -document.querySelector('#logs').scrollHeight })
     const getLogClass = (log) => log.type === 'info' ? 'log--info' : 'log--error'
 
     return { logs, getLogClass }
@@ -39,6 +41,8 @@ export default {
     min-height: 150px;
     max-height: 350px;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
     &::-webkit-scrollbar {
       width: 0px;
       background: transparent; /* make scrollbar transparent */
@@ -48,6 +52,13 @@ export default {
      border: 1px #000 solid;
      border-width: 1px 0;
      border-radius: 3px;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: .5rem 1rem;
+     .time {
+       font-weight: bold;
+     }
      &--info {
        background-color: rgb(169, 231, 196);
      }

@@ -10,7 +10,8 @@ const getUserCred = () => JSON.parse(localStorage.getItem('user'))
 const createLog = ( type, msg ) => {
   return {
     type,
-    msg
+    msg,
+    time: new Date().toLocaleTimeString()
   }
 }
 
