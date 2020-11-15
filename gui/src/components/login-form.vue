@@ -10,10 +10,11 @@
       <input type="password" class="login" id="passwd" v-model="user.password" @input="e => $store.commit('setPassword', e.target.value)">
     </div>
 
-    <div class="input-wrapper align-right">
+    <!-- not working -->
+    <!-- <div class="align-right">
       <input type="checkbox" id="remember" v-model="user.remember" @input="e => $store.commit('setRemember', e.target.value)">
       <label for="remember">zapamiętaj</label>
-    </div>
+    </div> -->
   </div>  
 </template>
 
@@ -28,7 +29,7 @@ export default {
       $store.commit('setUser', getUserCred())
     }
     const user = ref($store.state.user)
-    
+
     return { user }
   }
 }
@@ -36,7 +37,7 @@ export default {
 
 <style>
 .align-right {
-  justify-content: flex-end;
+  text-align: right;
 }
 
 .input-wrapper {

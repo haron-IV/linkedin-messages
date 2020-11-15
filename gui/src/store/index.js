@@ -11,7 +11,10 @@ export default new Vuex.Store({
       remember: false
     },
     errors: [],
-    logInfo: []
+    logInfo: [],
+    runConfig: {
+      gender: null
+    }
   },
   mutations: {
     setUser(state, payload) { state.user = payload },
@@ -19,7 +22,8 @@ export default new Vuex.Store({
     setPassword(state, payload) { state.user.password = payload },
     setRemember(state, payload) { state.user.remember = payload },
     addError(state, payload) { state.errors.push(payload) },
-    addLog(state, payload) { state.logInfo.push(payload) }
+    addLog(state, payload) { state.logInfo.push(payload) },
+    setGender(state, payload) { state.runConfig.gender = payload }
   },
   actions: {
   },

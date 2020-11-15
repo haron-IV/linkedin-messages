@@ -2,9 +2,9 @@
   <div v-if="showInterface" class="container">
     <h1>LinkedIn Message Bot</h1>
     <login-form />
-
+    <configuration-form />
+    
     <button class="btn-success btn-lg" @click="runBot()">Start</button>
-
     <logs />
   </div>
 </template>
@@ -14,10 +14,12 @@ import Logs from '../components/logs.vue'
 import LoginForm from '../components/login-form.vue'
 import { getCookie, saveUserCred, getUserCred, api_url, createLog } from '@/components/utils'
 import { computed, onMounted, reactive, ref } from '@vue/composition-api'
+import ConfigurationForm from '../components/configuration-form.vue'
 
 export default {
   components: {
-    LoginForm, Logs
+    LoginForm, Logs,
+    ConfigurationForm
   },
   setup(_, { root: { $axios, $store }} ) {
     const showInterface = ref(false)
@@ -26,10 +28,11 @@ export default {
     }
 
     const user = computed(() => $store.state.user )
+    const runConfig = computed(() => $store.state.runConfig )
 
     const runBot = () => {
       saveUserCred(user.value)
-      $axios.post(`${api_url.local}/runner/start`, { ...user.value })
+      $axios.post(`${api_url.local}/runner/start`, { ...user.value, runConfig: runConfig.value })
       .then(res => {
         if(res.status === 200) $store.commit('addLog', createLog('info', res.data.msg))
         else $store.commit('addError', createLog('error', res.data.msg))
