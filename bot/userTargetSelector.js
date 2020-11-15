@@ -23,25 +23,26 @@ const mapUsers = async (page) => {
     const contactLvl = userNameAndContactLvl?.split(' ').slice(2, userNameAndContactLvl?.split(' ').length)[1]
     const localization = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[2]?.innerText, user)
     const profileHref = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[0]?.getAttribute('href'), user)
-    let gender = null;
-    await axios.get(`https://api.genderize.io/?name=${extractNameFromFullName(fullName)}`).then(res => {
-      gender = res.data.gender
-      console.log(res.data.gender);
-    })
 
     if (fullName, contactLvl, localization, profileHref) {
       const userObj = {
         fullName,
         contactLvl,
         localization,
-        profileHref,
-        gender
+        profileHref
       }
   
       selectedUsers.push(userObj)
     }
   }
-  
+
+  for (const user of selectedUsers) {
+    await axios.get(`https://api.genderize.io/?name=${extractNameFromFullName(user.fullName)}`).then(res => {
+      user.gender = res.data.gender
+      console.log(res.data.gender);
+    })
+  }
+
   return selectedUsers
 }
 
@@ -51,11 +52,17 @@ const getUsersFromPage = async (page) => {
   return users
 }
 
-const selectUserToSendMsg = async (page) => {
-  const users = await getUsersFromPage(page)
+const selectUsersToSendMsg = async (page, runConfig) => {
+  const {runConfig: { gender }} = runConfig
+  let users = await getUsersFromPage(page)
+  
+  if(gender !== 'all') {
+    users = users.filter(user => user.gender === gender)
+  }
+
   console.log(users);
   // select users to send msg and return it as array
   // when array is empty return false then go to the next page
 }
 
-module.exports = selectUserToSendMsg
+module.exports = selectUsersToSendMsg

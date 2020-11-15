@@ -7,9 +7,9 @@ const openContacts = async (page) => {
   logger.info('Contacts opened')
 }
 
-const runBot = async (page) => {
+const runBot = async (page, runConfig) => {
   await openContacts(page)
-  await selectUserToSendMsg(page)
+  await selectUserToSendMsg(page, runConfig)
 }
 
 module.exports = runBot

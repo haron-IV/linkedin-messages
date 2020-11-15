@@ -3,7 +3,7 @@
     <h1>LinkedIn Message Bot</h1>
     <login-form />
     <configuration-form />
-    
+
     <button class="btn-success btn-lg" @click="runBot()">Start</button>
     <logs />
   </div>
@@ -28,7 +28,12 @@ export default {
     }
 
     const user = computed(() => $store.state.user )
-    const runConfig = computed(() => $store.state.runConfig )
+    const runConfig = computed(() => {
+      const cfg = $store.state.runConfig
+      cfg.regions = cfg.regions.filter(region => region.selected === true)
+
+      return cfg
+    })
 
     const runBot = () => {
       saveUserCred(user.value)

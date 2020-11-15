@@ -17,7 +17,7 @@ todo:
   - open chromium ✅
   - login page ✅
   - go to contact ✅
-  - check gender on selecting msg
+  - check gender on selecting msg ✅
   - user target selector 
   - type & send message
   - create config

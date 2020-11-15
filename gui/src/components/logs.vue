@@ -38,7 +38,7 @@ export default {
   text-shadow: 2px 2px 4px #000;
   &__wrap {
     width: 100%;
-    min-height: 150px;
+    min-height: 50px;
     max-height: 350px;
     overflow-y: scroll;
     display: flex;
