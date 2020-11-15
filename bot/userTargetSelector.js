@@ -1,10 +1,10 @@
 const logger = require('../api/logger')
+const {cfg: { waitTime } } = require('./utils')
 
 const scrollToBottomOfThePage = async (page) => {
   await page.evaluate(() => window.scrollTo(0,document.body.scrollHeight))
-  const time = 60 * 1000
-  logger.info(`Wait ${time / (60 * 1000)} mins`)
-  await page.waitFor(time)
+  logger.info(`Wait ${waitTime / 1000} secunds`)
+  await page.waitFor(waitTime)
 }
 
 const getUsers = async (page) => {
