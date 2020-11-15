@@ -29,7 +29,7 @@ export default {
 
     const runBot = () => {
       saveUserCred(user.value)
-      $axios.post(`${api_url.local}/runner/start`, { ...user })
+      $axios.post(`${api_url.local}/runner/start`, { ...user.value })
       .then(res => {
         if(res.status === 200) $store.commit('addLog', createLog('info', res.data.msg))
         else $store.commit('addError', createLog('error', res.data.msg))

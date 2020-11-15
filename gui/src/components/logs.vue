@@ -4,8 +4,8 @@
       <div
         class="log"
         :class="getLogClass(log)"
-        v-for="log in logs"
-        :key="log.msg">
+        v-for="(log, i) in logs"
+        :key="i">
         {{ log.msg }}
       </div>
     </div>
