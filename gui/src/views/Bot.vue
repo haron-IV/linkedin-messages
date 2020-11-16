@@ -4,7 +4,7 @@
     <login-form />
     <configuration-form />
 
-    <button class="btn-success btn-lg" @click="runBot()">Start</button>
+    <button class="btn-lg" :class="runBotState ? 'btn-danger' : 'btn-success'" @click="runBot()">{{ runBotState ? 'Stop' : 'Start' }}</button>
     <logs />
   </div>
 </template>
@@ -34,19 +34,23 @@ export default {
 
       return cfg
     })
-
+    const runBotState = computed(() => $store.state.botStarted)
     const runBot = () => {
       saveUserCred(user.value)
+      if(!runBotState.value) {
+        $axios.post(`${api_url.local}/runner/start`, { ...user.value, runConfig: runConfig.value })
+        .then(res => {
+          if(res.status === 200) $store.commit('addLog', createLog('info', res.data.msg))
+          else $store.commit('addError', createLog('error', res.data.msg))
+        })
+        .catch(err => { console.log(err); $store.commit('addError', createLog('error', err.data.msg)) })
+      } else {
+        // stop bot code
+      }
       $store.commit('toggleBotStarted')
-      $axios.post(`${api_url.local}/runner/start`, { ...user.value, runConfig: runConfig.value })
-      .then(res => {
-        if(res.status === 200) $store.commit('addLog', createLog('info', res.data.msg))
-        else $store.commit('addError', createLog('error', res.data.msg))
-      })
-      .catch(err => { console.log(err); $store.commit('addError', createLog('error', err.data.msg)) })
     }
 
-    return { showInterface, runBot }
+    return { showInterface, runBot, runBotState }
   }
 }
 </script>

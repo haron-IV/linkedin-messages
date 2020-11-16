@@ -39,7 +39,6 @@ const mapUsers = async (page) => {
   for (const user of selectedUsers) {
     await axios.get(`https://api.genderize.io/?name=${extractNameFromFullName(user.fullName)}`).then(res => {
       user.gender = res.data.gender
-      console.log(user);
     })
   }
 
@@ -64,17 +63,25 @@ const getLocalozatonObj = (localization) => {
 
 const selectUsersToSendMsg = async (page, runConfig) => {
   const {runConfig: { gender, regions }} = runConfig
+  const regionsNames = regions.map(el => el.name)
   let users = await getUsersFromPage(page)
-  
-  if (gender !== 'all' && gender) {
+  console.log('---- BEFORE ----', 'gender', (gender && gender !== 'all'));
+  if (gender && gender !== 'all') {
     users = users.filter(user => user.gender === gender)
-    console.log('gender: ', gnder, users);
   }
-  if (regions) { //TODO: check this if state
-    users = users.filter(user => regions.includes(getLocalozatonObj(user.localization.voivodeship)) ? user : null )
+  console.log('---- BEFORE ----', 'regions', regionsNames.length );
+  if (regionsNames.length > 0) { //TODO: check this if state
+    users = users.filter(user => {
+      const loc = getLocalozatonObj(user.localization).voivodeship
+      console.log("loc", loc, 'should', getLocalozatonObj(user.localization));
+      if(regionsNames.includes(loc)) return user
+      return null
+    })
   }
 
-  // console.log(users);
+
+
+  console.log(users);
   // select users to send msg and return it as array
   // when array is empty return false then go to the next page
 }
