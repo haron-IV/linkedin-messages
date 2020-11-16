@@ -19,7 +19,7 @@
         <label for="gender">Wybierz region:</label>
         <div class="regions">
           <ul class="list">
-            <li class="list-item" :class="{'list-item--selected': region.selected}" v-for="region in $store.state.runConfig.regions" :key="region.name" @click="$store.commit('selectRegion', region.name)">
+            <li class="list-item" :class="{'list-item--selected': region.selected}" v-for="region in $store.state.runConfig.regions" :key="region.name" @click="$store.commit('toggleRegion', region.name)">
               {{region.name}}
             </li>
           </ul>

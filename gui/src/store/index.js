@@ -42,8 +42,9 @@ export default new Vuex.Store({
     addError(state, payload) { state.errors.push(payload) },
     addLog(state, payload) { state.logInfo.push(payload) },
     setGender(state, payload) { state.runConfig.gender = payload },
-    selectRegion(state, regionName) { 
-      state.runConfig.regions.find(region => region.name === regionName).selected = true
+    toggleRegion(state, regionName) { 
+      const region = state.runConfig.regions.find(region => region.name === regionName)
+      region.selected = !region.selected
     }
   },
   actions: {
