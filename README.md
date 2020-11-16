@@ -18,9 +18,10 @@ todo:
   - login page ✅
   - go to contact ✅
   - check gender on selecting msg ✅
-  - user target selector 
-  - type & send message
-  - create config
+  - user target selector ✅
+  - type & send message & add sending only when contact messages are empty
+  - add cfg how much msg to send
+  - stop on request (close browser)
 
 * production
   - configure nginx for API
@@ -31,9 +32,9 @@ todo:
   * add login page ✅
     - username, login to linked in ✅
   * add bot interface
-    - pole wyboru wysylaj do: plec, woje., wczesniejszy brak kontaktu
+    - pole wyboru wysylaj do: plec, woje., ✅ wczesniejszy brak kontaktu 
     - tresc wiadomosci
-    - start / stop bot
+    - start / stop bot✅
     - bot status
 
 

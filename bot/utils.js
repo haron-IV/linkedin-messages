@@ -4,7 +4,8 @@ const cfg = {
   url: {
     contacts: 'https://www.linkedin.com/search/results/people/?facetNetwork=%5B%22F%22%5D&origin=CLUSTER_EXPANSION'
   },
-  waitTime: process.env.ENV === 'local' ? 5000 : (60 * 1000)
+  waitTime: process.env.ENV === 'local' ? 5000 : (60 * 1000),
+  constactPageCounter: 0
 }
 
 const closeBrowser = async (browser) => { await browser.close() }

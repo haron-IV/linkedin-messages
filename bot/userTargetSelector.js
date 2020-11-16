@@ -65,12 +65,11 @@ const selectUsersToSendMsg = async (page, runConfig) => {
   const {runConfig: { gender, regions }} = runConfig
   const regionsNames = regions.map(el => el.name)
   let users = await getUsersFromPage(page)
-  console.log('---- BEFORE ----', 'gender', (gender && gender !== 'all'));
+  
   if (gender && gender !== 'all') {
     users = users.filter(user => user.gender === gender)
   }
-  console.log('---- BEFORE ----', 'regions', regionsNames.length );
-  if (regionsNames.length > 0) { //TODO: check this if state
+  if (regionsNames.length > 0) {
     users = users.filter(user => {
       const loc = getLocalozatonObj(user.localization).voivodeship
       console.log("loc", loc, 'should', getLocalozatonObj(user.localization));
@@ -78,12 +77,8 @@ const selectUsersToSendMsg = async (page, runConfig) => {
       return null
     })
   }
-
-
-
-  console.log(users);
-  // select users to send msg and return it as array
-  // when array is empty return false then go to the next page
+  
+  return users
 }
 
 module.exports = selectUsersToSendMsg
