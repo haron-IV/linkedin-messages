@@ -10,14 +10,14 @@ const Browser = async () => {
   const page = await browser.newPage()
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
   await page.setViewport({ width: 1440, height: 754 })
-  logger.info('Bot initialized')
+  logger.http('Bot initialized', 123)
 
   return { browser, page }
 }
 
 const openLI = async (page) => {
   await page.goto('https://linkedin.com')
-  logger.info('Linkedin opened')
+  logger.http('Linkedin opened')
 }
 
 const start = async (runConfig) => {

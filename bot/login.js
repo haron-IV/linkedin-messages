@@ -22,7 +22,7 @@ const login = async (page, runConfig) => {
   await typePasswd(page, password)
   await clickLoginButton(page)
   await page.waitForNavigation()
-  logger.info('User logged in.')
+  logger.http('User logged in.')
 }
 
 module.exports = login

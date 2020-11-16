@@ -17,6 +17,7 @@
     "gender-detection": "^0.1.0",
     "line-reader": "^0.4.0",
     "lodash.deburr": "^4.1.0",
+    "lodash.uniqby": "^4.7.0",
     "mongoose": "^5.10.14",
     "node-sass": "^5.0.0",
     "puppeteer": "^5.4.1",

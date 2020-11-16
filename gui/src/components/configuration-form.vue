@@ -50,6 +50,7 @@ select {
   list-style-type: none;
   height: 30px;
   overflow: hidden;
+  
 }
 .list:hover {
   height: 200px;

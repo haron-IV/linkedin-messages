@@ -37,12 +37,13 @@ export default {
 
     const runBot = () => {
       saveUserCred(user.value)
+      $store.commit('toggleBotStarted')
       $axios.post(`${api_url.local}/runner/start`, { ...user.value, runConfig: runConfig.value })
       .then(res => {
         if(res.status === 200) $store.commit('addLog', createLog('info', res.data.msg))
         else $store.commit('addError', createLog('error', res.data.msg))
       })
-      .catch(err => { $store.commit('addError', createLog('error', err.data.msg)) })
+      .catch(err => { console.log(err); $store.commit('addError', createLog('error', err.data.msg)) })
     }
 
     return { showInterface, runBot }

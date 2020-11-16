@@ -11,7 +11,7 @@ const createLog = ( type, msg ) => {
   return {
     type,
     msg,
-    time: new Date().toLocaleTimeString()
+    time: `${new Date().toLocaleDateString().replace(/[.]/g, '-')} ( ${new Date().toLocaleTimeString()} )`
   }
 }
 

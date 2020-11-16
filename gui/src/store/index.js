@@ -12,6 +12,8 @@ export default new Vuex.Store({
     },
     errors: [],
     logInfo: [],
+    lastApiLog: null,
+    botStarted: false,
     runConfig: {
       gender: null,
       regions: [
@@ -39,13 +41,35 @@ export default new Vuex.Store({
     setLogin(state, payload) { state.user.login = payload },
     setPassword(state, payload) { state.user.password = payload },
     setRemember(state, payload) { state.user.remember = payload },
-    addError(state, payload) { state.errors.push(payload) },
-    addLog(state, payload) { state.logInfo.push(payload) },
+    addError(state, payload) { 
+      if (payload.length >= 1) {
+        state.errors = [...state.errors, ...payload]
+      } else {
+        state.errors.push(payload) 
+      }
+    },
+    addLog(state, payload) { 
+      if (payload.length >= 1) {
+        state.logInfo = [...state.logInfo, ...payload]  
+      } else {
+        state.logInfo.push(payload) 
+      }
+    },
+    updateLogs(state, payload) {
+      if (payload.length >= 1) {
+        state.logInfo = []
+        state.logInfo = [...payload]
+      } else {
+        state.logInfo.push(payload) 
+      }
+    },
     setGender(state, payload) { state.runConfig.gender = payload },
     toggleRegion(state, regionName) { 
       const region = state.runConfig.regions.find(region => region.name === regionName)
       region.selected = !region.selected
-    }
+    },
+    setLastApiLog(state, payload) { state.lastApiLog = payload },
+    toggleBotStarted(state) { state.botStarted = !state.botStarted}
   },
   actions: {
   },
