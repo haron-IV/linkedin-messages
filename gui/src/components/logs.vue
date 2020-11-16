@@ -15,13 +15,30 @@
 
 <script>
 import { computed, watch } from '@vue/composition-api'
+import { api_url }  from '@/components/utils'
+
 export default {
-  setup(_, {root: { $store }}) {
+  setup(_, {root: { $store, $axios }}) {
     const logs = computed(() => $store.getters['getLogs'])
-    watch(logs, () => { document.querySelector('#logs').scrollTop = -document.querySelector('#logs').scrollHeight })
+    watch(logs, () => { 
+      if (logs.value.length > 0) {
+        $axios.get(`${api_url.local}/logs`).then(res => {
+          const logs = `[${res.data.text.slice(0, -2)}]`
+          // .split('"}').map(el => el = el+'"}').map(el => el.trim().replace(/{/g, '{"').replace(/:/g, '":').replace(/", /, '", "'))
+          // logs.pop()
+          
+          console.log(logs);
+          console.log(JSON.parse(logs));
+        })
+      }
+
+      if (document.querySelector('#logs')) document.querySelector('#logs').scrollTop = -document.querySelector('#logs').scrollHeight;
+    })
     const getLogClass = (log) => log.type === 'info' ? 'log--info' : 'log--error'
 
-    return { logs, getLogClass }
+    const getLogsFromApi = () => $axios.get(`${api_url.local}/logs`)
+
+    return { logs, getLogClass, getLogsFromApi }
   }
 }
 </script>

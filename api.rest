@@ -9,3 +9,6 @@ Content-Type: application/json
 ### 
 
 GET https://api.genderize.io/?name=teodor
+
+### 
+GET  http://localhost:9090/logs

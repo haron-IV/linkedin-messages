@@ -1,11 +1,18 @@
 const { createLogger, format, transports } = require('winston')
+const lr = require('line-reader')
+const fs = require('fs');
+const { resolve } = require('path');
 
 const customFormat = format.printf(({ level, message, timestamp }) => {
   return `${timestamp} | ${level}: ${message}`;
 });
 
-const customFormatFile = format.printf(({ level, message, timestamp }) => {
-  return `{timestamp: "${timestamp}", level: "${level}",  message: "${message}"}`;
+const clif = () => fs.readFileSync('logs/logs.log', 'utf8').split('\n').length;
+
+
+const customFormatFile = format.printf( ({ level, message, timestamp }) => {
+  
+  return `{ "i": ${clif()} "timestamp": "${timestamp}", "level": "${level}", "message": "${message}" },`;
 });
 
 const logger = createLogger({
