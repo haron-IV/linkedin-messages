@@ -1,6 +1,6 @@
 const { cfg: { url: { contacts }, constactPageCounter } } = require('./utils')
 const logger = require('../api/logger')
-const selectUserToSendMsg = require('./userTargetSelector')
+const { messageLoop } = require('./messageSender')
 
 const openContacts = async (page) => {
   await page.goto(contacts, { waitUntil: 'domcontentloaded' })
@@ -15,7 +15,8 @@ const nextContactsPage = async (page) => {
 
 const runBot = async (page, runConfig) => {
   await openContacts(page)
-  const selectedUsers = await selectUserToSendMsg(page, runConfig)
+  // loop
+  await messageLoop(page, runConfig)
 }
 
 module.exports = runBot

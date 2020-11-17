@@ -2,6 +2,7 @@ const logger = require('../api/logger')
 
 const cfg = {
   url: {
+    base: 'https://www.linkedin.com',
     contacts: 'https://www.linkedin.com/search/results/people/?facetNetwork=%5B%22F%22%5D&origin=CLUSTER_EXPANSION'
   },
   waitTime: process.env.ENV === 'local' ? 5000 : (60 * 1000),

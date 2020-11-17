@@ -33,7 +33,7 @@ todo:
     - username, login to linked in ✅
   * add bot interface
     - pole wyboru wysylaj do: plec, woje., ✅ 
-    - tresc wiadomosci
+    - tresc wiadomosci✅ 
     - start / stop bot✅
     - bot status
 

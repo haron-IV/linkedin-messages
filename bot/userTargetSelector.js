@@ -10,20 +10,23 @@ const scrollToBottomOfThePage = async (page) => {
 }
 
 const getUsers = async (page) => {
-  return [...await page.$$('div div[role=main] div div ul li')]
+  return [...await page.$$('div div[role=main] ul li')]
 }
 
 const mapUsers = async (page) => {
   const users = await getUsers(page)
+  logger.info(`users before map: ${users.length}`)
   const selectedUsers = []
 
   for (const user of users) {
-    const userNameAndContactLvl = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[0]?.innerText, user)
+    const userNameAndContactLvl = await page.evaluate(user => user?.children[0].children[0].children[0].children[1].children[0].children[0].children[0].innerText, user)
     const fullName = deburr(userNameAndContactLvl?.split(' ').slice(0, 2).join())
     const contactLvl = userNameAndContactLvl?.split(' ').slice(2, userNameAndContactLvl?.split(' ').length)[1]
-    const localization = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[2]?.innerText, user)
-    const profileHref = await page.evaluate(user => user?.children[0]?.children[0]?.children[1]?.children[0]?.getAttribute('href'), user)
-
+    const localization = await page.evaluate(user => user.children[0].children[0].children[0].children[1].children[0].children[0].children[1].children[1].innerText, user)
+    const profileHref = await page.evaluate(user => user?.children[0].children[0].children[0].children[0].children[0].children[0].children[0].getAttribute('href'), user)
+    // console.log('------------------------------------------------------')
+    // console.log(fullName, contactLvl, localization, profileHref)
+    // console.log('------------------------------------------------------')
     if (fullName, contactLvl, localization, profileHref) {
       const userObj = {
         fullName,
@@ -31,7 +34,6 @@ const mapUsers = async (page) => {
         localization,
         profileHref
       }
-  
       selectedUsers.push(userObj)
     }
   }
@@ -39,8 +41,10 @@ const mapUsers = async (page) => {
   for (const user of selectedUsers) {
     await axios.get(`https://api.genderize.io/?name=${extractNameFromFullName(user.fullName)}`).then(res => {
       user.gender = res.data.gender
-    })
+    }).catch(err => { console.log(err)})
   }
+
+  logger.info(`users after map: ${selectedUsers.length}`)
 
   return selectedUsers
 }
@@ -48,6 +52,7 @@ const mapUsers = async (page) => {
 const getUsersFromPage = async (page) => {
   await scrollToBottomOfThePage(page)
   const users = await mapUsers(page)
+  logger.info('Users mapped')
   return users
 }
 
@@ -65,7 +70,7 @@ const selectUsersToSendMsg = async (page, runConfig) => {
   const {runConfig: { gender, regions }} = runConfig
   const regionsNames = regions.map(el => el.name)
   let users = await getUsersFromPage(page)
-  
+  logger.info(`Users before filtering ${users.length}`)
   if (gender && gender !== 'all') {
     users = users.filter(user => user.gender === gender)
   }
@@ -77,6 +82,7 @@ const selectUsersToSendMsg = async (page, runConfig) => {
       return null
     })
   }
+  logger.http(`Users selected from page ${users.length}`)
   
   return users
 }
