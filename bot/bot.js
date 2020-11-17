@@ -18,22 +18,26 @@ const nextContactsPage = async (page, limit) => {
 
 const getMaxContactPages = async (page) => {
   await page.evaluate(() => window.scrollTo(0,document.body.scrollHeight))
-  await page.waitForSelector('div div div button + ul li:last-child button span')
-  const maxPagesHandler = await page.$('div div div button + ul li:last-child button span')
+  await page.waitForSelector(maxContactPages)
+  const maxPagesHandler = await page.$(maxContactPages)
   const maxPages = await page.evaluate(maxPagesHandler => maxPagesHandler.textContent, maxPagesHandler)
   logger.http(`${maxPages} pages with contacts`)
   return Number(maxPages)
 }
 
-const runBot = async (page, runConfig) => {
+const runBot = async (browser, page, runConfig) => {
   const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
   const contactPagesLimit = await getMaxContactPages(page)
+  
   while(counter <= limit && constactPageCounter < contactPagesLimit) { // if limit will reach or users list will end 
     await messageLoop(page, runConfig, counter)
     await nextContactsPage(page, contactPagesLimit)
   }
+  
   //TODO: followup
+  logger.http('Done.')
+  await browser.close()
 }
 
 module.exports = { runBot }

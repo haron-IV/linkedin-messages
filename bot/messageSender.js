@@ -1,7 +1,7 @@
 const logger = require('../api/logger')
 const selectUserToSendMsg = require('./userTargetSelector')
 const { messageWindow, openMessageBtn, sendMessageBtn } = require('./elements')
-const { saveUserInfo } = require('../api/service/userService')
+const { saveUserInfo, getUserByProfileLink } = require('../api/service/userService')
 const { 
   cfg: { 
     url: { 
@@ -12,10 +12,10 @@ const {
   } 
 } = require('./utils')
 
-const openProfile = async (page, profileLink) => { 
+const openProfile = async (page, profileLink) => {  
   logger.info(`Profile openend -> ${profileLink}`)
   // ${base} sometimes links can be without orign
-  await page.goto(`${profileLink}`, { waitUntil: 'domcontentloaded' }) 
+  await page.goto(`${profileLink}`, { waitUntil: 'domcontentloaded' })
 }
 
 const openMessageWindow = async (page) => {
@@ -36,11 +36,14 @@ const messageLoop = async (page, runConfig, counter) => {
   
   const selectedUsers = await selectUserToSendMsg(page, runConfig) // select users from actual page
   for (const user of selectedUsers) {
-    await openProfile(page, user.profileHref)
-    await openMessageWindow(page)
-    await sendMessage(page, runConfig.runConfig.message, user)
-    counter++;
-    await page.waitFor(waitTImeAfterMessage)
+    if (!await getUserByProfileLink(user.profileLink)) {
+      await openProfile(page, user.profileHref)
+      await openMessageWindow(page)
+      await sendMessage(page, runConfig.runConfig.message, user)
+      counter++;
+      await page.waitFor(waitTImeAfterMessage)
+    }
+    logger.info(`User ${user.fullName} already used`)
   }
 }
 

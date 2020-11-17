@@ -1,8 +1,8 @@
-const userModel = require('../model/userModel')
+const User = require('../model/userModel')
 const logger = require('../logger')
 
 const saveUserInfo = async (userData) => {
-  const user = new userModel(userData)
+  const user = new User({...userData, profileLink: userData.profileHref})
 
   await user.save()
   .then(() => {
@@ -13,4 +13,8 @@ const saveUserInfo = async (userData) => {
   })
 }
 
-module.exports = { saveUserInfo }
+const getUserByProfileLink = async (profileLink) => {
+  return await User.findOne({profileLink: profileLink})
+}
+
+module.exports = { saveUserInfo, getUserByProfileLink }

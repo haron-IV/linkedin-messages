@@ -25,7 +25,7 @@ const start = async (runConfig) => {
   
   await openLI(page)
   await login(page, runConfig)
-  await runBot(page, runConfig)
+  await runBot(browser, page, runConfig)
 }
 
 module.exports = start
