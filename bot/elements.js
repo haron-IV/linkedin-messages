@@ -6,7 +6,8 @@ const el = {
   openMessageBtn: '.body main div section div a',
   messageWindow: 'aside div + div[tabindex="-1"]',
   messageTextInput: 'div form div div div p',
-  sendMessageBtn: 'footer div div button[type=submit]'
+  sendMessageBtn: 'footer div div button[type=submit]',
+  maxContactPages: 'div div div button + ul li:last-child button span'
 }
 
 module.exports = el
