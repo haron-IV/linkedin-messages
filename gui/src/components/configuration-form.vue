@@ -31,13 +31,38 @@
           </div>
         </div>
       </div>
+
+      <div class="input-wrapper">
+        <label for="message">message</label>
+        <textarea name="" id="message" v-model="msg"></textarea>
+      </div>
+
+      <div class="input-wrapper">
+        <label for="followup-message">follow up message</label>
+        <textarea name="" id="followup-message" v-model="fmsg"></textarea>
+      </div>
     </section>
   </div>
 </template>
 
 <script>
+import { computed, ref } from '@vue/composition-api'
 export default {
-  setup() {}
+  setup(_, { root: { $store } }) {
+    const msg = computed({
+      get: () => $store.state.runConfig.message,
+      set: val => { $store.commit('setMessage', val) }
+    })
+    
+    const fmsg = computed({
+      get: () => $store.state.runConfig.followupMessgae,
+      set: val => { $store.commit('setFollowupMessage', val) }
+    })
+
+    return {
+      msg, fmsg
+    }
+  }
 }
 </script>
 
@@ -67,5 +92,9 @@ select {
 }
 .list-item--selected {
   background-color: skyblue;
+}
+textarea {
+  min-width: 250px;
+  min-height: 100px;
 }
 </style>

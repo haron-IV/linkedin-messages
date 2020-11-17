@@ -32,10 +32,11 @@ todo:
   * add login page ✅
     - username, login to linked in ✅
   * add bot interface
-    - pole wyboru wysylaj do: plec, woje., ✅ wczesniejszy brak kontaktu 
+    - pole wyboru wysylaj do: plec, woje., ✅ 
     - tresc wiadomosci
     - start / stop bot✅
     - bot status
 
 
-    find gender: https://api.genderize.io/?name=teodor
+    ngnx
+    https://medium.com/@panzelva/deploying-express-js-website-to-vps-with-nginx-pm2-and-ubuntu-18-04-8c5d32593211

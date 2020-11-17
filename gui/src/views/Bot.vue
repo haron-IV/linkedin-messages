@@ -31,7 +31,7 @@ export default {
     const runConfig = computed(() => {
       const cfg = $store.state.runConfig
       cfg.regions = cfg.regions.filter(region => region.selected === true)
-
+      
       return cfg
     })
     const runBotState = computed(() => $store.state.botStarted)
@@ -45,7 +45,7 @@ export default {
         })
         .catch(err => { console.log(err); $store.commit('addError', createLog('error', err.data.msg)) })
       } else {
-        // stop bot code
+        //TODO: stop bot code
       }
       $store.commit('toggleBotStarted')
     }
