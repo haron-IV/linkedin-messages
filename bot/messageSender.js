@@ -10,6 +10,7 @@ const {
     constactPageCounter 
   } 
 } = require('./utils')
+let { sendMessageCount } = require('./bot')
 
 const openProfile = async (page, profileLink) => { 
   logger.info(`Profile openend -> ${profileLink}`)
@@ -41,9 +42,9 @@ const messageLoop = async (page, runConfig) => {
     await openProfile(page, user.profileHref)
     await openMessageWindow(page)
     await sendMessage(page, message)
+    sendMessageCount.i++
   }
 
-  //next page
   //after message loop check followup
 }
 

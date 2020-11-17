@@ -1,6 +1,9 @@
 const { cfg: { url: { contacts }, constactPageCounter } } = require('./utils')
 const logger = require('../api/logger')
 const { messageLoop } = require('./messageSender')
+let sendMessageCount = {
+  i: 0
+}
 
 const openContacts = async (page) => {
   await page.goto(contacts, { waitUntil: 'domcontentloaded' })
@@ -16,11 +19,11 @@ const nextContactsPage = async (page) => {
 const runBot = async (page, runConfig) => {
   const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
-  for(let i =0; i <= limit; i++) {
+  while(sendMessageCount.i <= limit) {
     await messageLoop(page, runConfig)
     await nextContactsPage(page)
   }
   
 }
 
-module.exports = runBot
+module.exports = { runBot, sendMessageCount }

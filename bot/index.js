@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer')
 const logger = require('../api/logger')
 const { browserConfig } = require('./utils')
 const login = require('./login')
-const runBot = require('./bot')
+const { runBot } = require('./bot')
 
 const Browser = async () => {
   const browser = await puppeteer.launch(browserConfig())
