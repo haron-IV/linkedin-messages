@@ -1,6 +1,7 @@
 const logger = require('../api/logger')
 const selectUserToSendMsg = require('./userTargetSelector')
 const { messageWindow, openMessageBtn, sendMessageBtn } = require('./elements')
+const { saveUserInfo } = require('../api/service/userService')
 const { 
   cfg: { 
     url: { 
@@ -14,8 +15,7 @@ const {
 const openProfile = async (page, profileLink) => { 
   logger.info(`Profile openend -> ${profileLink}`)
   // ${base} sometimes links can be without orign
-  await page.goto(`${profileLink}`, { waitUntil: 'domcontentloaded' })
-  
+  await page.goto(`${profileLink}`, { waitUntil: 'domcontentloaded' }) 
 }
 
 const openMessageWindow = async (page) => {
@@ -26,9 +26,9 @@ const openMessageWindow = async (page) => {
 
 const sendMessage = async (page, message, user) => {
   await page.keyboard.type(message)
-  await page.click(sendMessageBtn)
+  // await page.click(sendMessageBtn) //TODO: uncomment this for production
   logger.http(`Message send to: ${user.fullName}`)
-  //TODO: add user to db
+  saveUserInfo(user)
 }
 
 const messageLoop = async (page, runConfig, counter) => { 

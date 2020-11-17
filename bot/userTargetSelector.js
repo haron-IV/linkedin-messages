@@ -19,11 +19,12 @@ const mapUsers = async (page) => {
   const selectedUsers = []
 
   for (const user of users) {
-    const userNameAndContactLvl = await page.evaluate(user => user?.children[0].children[0].children[0].children[1].children[0].children[0].children[0].innerText, user)
+    //TODO: refactorize selecting element
+    const userNameAndContactLvl = await page.evaluate(user => user?.children[0]?.children[0]?.children[0]?.children[1]?.children[0]?.children[0]?.children[0]?.innerText, user)
     const fullName = deburr(userNameAndContactLvl?.split(' ').slice(0, 2).join())
     const contactLvl = userNameAndContactLvl?.split(' ').slice(2, userNameAndContactLvl?.split(' ').length)[1]
-    const localization = await page.evaluate(user => user.children[0].children[0].children[0].children[1].children[0].children[0].children[1].children[1].innerText, user)
-    const profileHref = await page.evaluate(user => user?.children[0].children[0].children[0].children[0].children[0].children[0].children[0].getAttribute('href'), user)
+    const localization = await page.evaluate(user => user?.children[0]?.children[0]?.children[0]?.children[1]?.children[0]?.children[0]?.children[1]?.children[1]?.innerText, user)
+    const profileHref = await page.evaluate(user => user?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0].getAttribute('href'), user)
     // console.log('------------------------------------------------------')
     // console.log(fullName, contactLvl, localization, profileHref)
     // console.log('------------------------------------------------------')
