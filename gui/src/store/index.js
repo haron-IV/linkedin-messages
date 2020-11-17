@@ -35,7 +35,8 @@ export default new Vuex.Store({
         { name: "zachodniopomorskie", selected: false }
       ],
       message: "",
-      followupMessage: ""
+      followupMessage: "",
+      messageCount: 0
     }
   },
   mutations: {
@@ -73,7 +74,8 @@ export default new Vuex.Store({
     setLastApiLog(state, payload) { state.lastApiLog = payload },
     toggleBotStarted(state) { state.botStarted = !state.botStarted },
     setMessage( state, payload) { state.runConfig.message = payload },
-    setFollowupMessage(state, payload) { state.runConfig.followupMessage = payload }
+    setFollowupMessage(state, payload) { state.runConfig.followupMessage = payload },
+    setMessageCount(state, payload) { state.runConfig.messageCount = payload }
   },
   actions: {
   },
