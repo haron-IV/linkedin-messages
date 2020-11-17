@@ -5,12 +5,13 @@ const { browserConfig } = require('./utils')
 const login = require('./login')
 const { runBot } = require('./bot')
 
+let browser = null;
 const Browser = async () => {
   const browser = await puppeteer.launch(browserConfig())
   const page = await browser.newPage()
   await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
   await page.setViewport({ width: 1440, height: 754 })
-  logger.http('Bot initialized', 123)
+  logger.http('Bot initialized')
 
   return { browser, page }
 }
@@ -21,11 +22,13 @@ const openLI = async (page) => {
 }
 
 const start = async (runConfig) => {
-  const { browser, page } = await Browser()
-  
-  await openLI(page)
-  await login(page, runConfig)
-  await runBot(browser, page, runConfig)
+  browser = await Browser()
+
+  await openLI(browser.page)
+  await login(browser.page, runConfig)
+  await runBot(browser.browser, browser.page, runConfig)
 }
 
-module.exports = start
+const stop = async () => { browser.browser.close() }
+
+module.exports = { start, stop }

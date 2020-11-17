@@ -6,7 +6,7 @@ todo:
   - add test model ✅
   - save test data ✅
   - add route for start bot ✅
-  - add route for stop bot
+  - add route for stop bot✅
   - add route to check bot status
   - add collecting logs for get it from front ✅
 
@@ -20,9 +20,9 @@ todo:
   - check gender on selecting msg ✅
   - user target selector ✅
   - type & send message ✅
-  - sending only when contact messages are empty 
+  - sending only when contact messages are empty ✅
   - add cfg how much msg to send ✅
-  - stop on request (close browser) 
+  - stop on request (close browser) ✅
 
 * production
   - configure nginx for API

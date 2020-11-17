@@ -12,3 +12,6 @@ GET https://api.genderize.io/?name=teodor
 
 ### 
 GET  http://localhost:9090/logs
+
+### 
+GET http://localhost:9090/runner/stop
