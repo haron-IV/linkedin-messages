@@ -1,4 +1,5 @@
-const { cfg: { url: { contacts }, constactPageCounter } } = require('./utils')
+const { cfg: { url: { contacts } } } = require('./utils')
+let { cfg: { constactPageCounter } } = require('./utils')
 const logger = require('../api/logger')
 const { messageLoop } = require('./messageSender')
 let counter = 0

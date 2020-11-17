@@ -7,8 +7,8 @@ const {
     url: { 
       base,
       contacts 
-    }, 
-    constactPageCounter 
+    },
+    waitTImeAfterMessage
   } 
 } = require('./utils')
 
@@ -40,7 +40,7 @@ const messageLoop = async (page, runConfig, counter) => {
     await openMessageWindow(page)
     await sendMessage(page, runConfig.runConfig.message, user)
     counter++;
-    await page.waitFor(2 * 60 * 1000)
+    await page.waitFor(waitTImeAfterMessage)
   }
 }
 
