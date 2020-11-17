@@ -44,7 +44,7 @@
 
       <div class="input-wrapper">
         <label for="message-count">Ile wiadomości wysłać?</label>
-        <input type="number" id="message-count" v-model="msgC">
+        <input type="number" id="message-count" v-model="msgL">
       </div>
     </section>
   </div>
@@ -64,13 +64,13 @@ export default {
       set: val => { $store.commit('setFollowupMessage', val) }
     })
 
-    const msgC = computed({
-      get: () => $store.state.runConfig.messageCount,
-      set: val => { $store.commit('setMessageCount', val) }
+    const msgL = computed({
+      get: () => $store.state.runConfig.messagesLimit,
+      set: val => { $store.commit('setmessagesLimit', val) }
     })
 
     return {
-      msg, fmsg, msgC
+      msg, fmsg, msgL
     }
   }
 }

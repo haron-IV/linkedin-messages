@@ -14,9 +14,13 @@ const nextContactsPage = async (page) => {
 }
 
 const runBot = async (page, runConfig) => {
+  const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
-  // loop
-  await messageLoop(page, runConfig)
+  for(let i =0; i <= limit; i++) {
+    await messageLoop(page, runConfig)
+    await nextContactsPage(page)
+  }
+  
 }
 
 module.exports = runBot

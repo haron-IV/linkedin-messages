@@ -36,7 +36,7 @@ export default new Vuex.Store({
       ],
       message: "",
       followupMessage: "",
-      messageCount: 0
+      messagesLimit: 0
     }
   },
   mutations: {
@@ -75,7 +75,7 @@ export default new Vuex.Store({
     toggleBotStarted(state) { state.botStarted = !state.botStarted },
     setMessage( state, payload) { state.runConfig.message = payload },
     setFollowupMessage(state, payload) { state.runConfig.followupMessage = payload },
-    setMessageCount(state, payload) { state.runConfig.messageCount = payload }
+    setmessagesLimit(state, payload) { state.runConfig.messagesLimit = payload }
   },
   actions: {
   },

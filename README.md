@@ -8,7 +8,7 @@ todo:
   - add route for start bot ✅
   - add route for stop bot
   - add route to check bot status
-  - add collecting logs for get it from front
+  - add collecting logs for get it from front ✅
 
 
 
@@ -19,9 +19,10 @@ todo:
   - go to contact ✅
   - check gender on selecting msg ✅
   - user target selector ✅
-  - type & send message & add sending only when contact messages are empty
-  - add cfg how much msg to send
-  - stop on request (close browser)
+  - type & send message ✅
+  - sending only when contact messages are empty 
+  - add cfg how much msg to send ✅
+  - stop on request (close browser) 
 
 * production
   - configure nginx for API
