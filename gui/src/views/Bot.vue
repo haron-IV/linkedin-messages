@@ -2,14 +2,14 @@
   <div v-if="showInterface" class="container">
     <header>
       <h1>LinkedIn Message Bot</h1>
-      <div>status<span :class="{'status--on': botStatus}"></span></div>
+      <div>status<span :class="{'status--on': runBotState}"></span></div>
       
     </header>
     
     <login-form />
     <configuration-form />
 
-    <button class="btn-lg" :class="runBotState ? 'btn-danger' : 'btn-success'" @click="runBot()">{{ runBotState ? 'Stop' : 'Start' }}</button>
+    <button class="btn-lg" :class="runBotState || botStatus ? 'btn-danger' : 'btn-success' " @click="runBot()">{{ runBotState ? 'Stop' : 'Start' }}</button>
     <logs />
   </div>
 </template>
@@ -55,10 +55,9 @@ export default {
       $store.commit('toggleBotStarted')
     }
 
-    const botStatus = ref(false)
     const getBotStatus = () => {
       $axios.get(`${api_url.local}/runner/status`).then(res => {
-        botStatus.value = res.data.msg.isBotRunning
+        $store.commit('setBotStarted', res.data.msg.isBotRunning)
       })
     }
 
@@ -66,7 +65,7 @@ export default {
       getBotStatus()  
     }, 5000);
 
-    return { showInterface, runBot, runBotState, botStatus }
+    return { showInterface, runBot, runBotState }
   }
 }
 </script>

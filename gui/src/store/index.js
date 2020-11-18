@@ -73,6 +73,7 @@ export default new Vuex.Store({
     },
     setLastApiLog(state, payload) { state.lastApiLog = payload },
     toggleBotStarted(state) { state.botStarted = !state.botStarted },
+    setBotStarted(state, payload) { state.botStarted = payload },
     setMessage( state, payload) { state.runConfig.message = payload },
     setFollowupMessage(state, payload) { state.runConfig.followupMessage = payload },
     setmessagesLimit(state, payload) { state.runConfig.messagesLimit = payload }
