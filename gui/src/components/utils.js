@@ -1,6 +1,7 @@
 const api_url = {
-  local: 'http://localhost:9090'
-} 
+  local: 'http://localhost:9090',
+  prod: 'http://96231f4c7749.ngrok.io'
+}
 
 const getCookie = () => document.cookie.split(';')
 const saveUserCred = (user) => {
