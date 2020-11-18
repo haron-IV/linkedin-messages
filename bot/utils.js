@@ -1,4 +1,5 @@
 const logger = require('../api/logger')
+const { addLog } = require('../api/service/logService')
 
 const cfg = {
   url: {
@@ -52,7 +53,8 @@ const getBotStatus = () => botStatus
 const stopBot = async () => {
   const b = await getBrowser()
   b.browser.close()
-  logger.http('Stop bot.')
+  logger.info('Stop bot.')
+  addLog({type: 'info', message: 'Bot stopped.'})
   setBotStatus(false)
 }
 

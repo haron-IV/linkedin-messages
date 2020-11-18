@@ -1,5 +1,6 @@
 const logger = require('../api/logger')
 const { loginInp, passwdInp, loginBtn } = require('./elements')
+const { addLog } = require('../api/service/logService')
 
 const typeLogin = async (page, login) => {
   await page.waitForSelector(loginInp)
@@ -22,7 +23,8 @@ const login = async (page, runConfig) => {
   await typePasswd(page, password)
   await clickLoginButton(page)
   await page.waitForNavigation()
-  logger.http('User logged in.')
+  logger.info('User logged in.')
+  addLog({type: 'info', message: 'User logged in.'})
 }
 
 module.exports = login

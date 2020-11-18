@@ -2,6 +2,7 @@ const axios = require('axios')
 const deburr = require('lodash.deburr')
 const logger = require('../api/logger')
 const {cfg: { waitTime }, extractNameFromFullName } = require('./utils')
+const { addLog } = require('../api/service/logService')
 
 const scrollToBottomOfThePage = async (page) => {
   await page.evaluate(() => window.scrollTo(0,document.body.scrollHeight))
@@ -83,7 +84,8 @@ const selectUsersToSendMsg = async (page, runConfig) => {
       return null
     })
   }
-  logger.http(`Users selected from page ${users.length}`)
+  logger.info(`Users selected from page ${users.length}`)
+  addLog({type: 'info', message: `Users selected from page ${users.length}`})
   
   return users
 }

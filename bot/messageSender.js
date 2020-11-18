@@ -2,6 +2,7 @@ const logger = require('../api/logger')
 const selectUserToSendMsg = require('./userTargetSelector')
 const { messageWindow, openMessageBtn, sendMessageBtn } = require('./elements')
 const { saveUserInfo, getUserByProfileLink } = require('../api/service/userService')
+const { addLog } = require('../api/service/logService')
 const { 
   cfg: { 
     url: { 
@@ -27,7 +28,8 @@ const openMessageWindow = async (page) => {
 const sendMessage = async (page, message, user) => {
   await page.keyboard.type(message)
   // await page.click(sendMessageBtn) //TODO: uncomment this for production
-  logger.http(`Message send to: ${user.fullName}`)
+  logger.info(`Message send to: ${user.fullName}`)
+  addLog({type: 'info', message: `Message send to: ${user.fullName}`})
   saveUserInfo(user)
 }
 

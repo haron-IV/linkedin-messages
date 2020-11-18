@@ -4,17 +4,19 @@ const  { stopBot } = require('./utils')
 const { maxContactPages } = require('./elements')
 const logger = require('../api/logger')
 const { messageLoop } = require('./messageSender')
+const { addLog } = require('../api/service/logService')
 let counter = 0
 
 const openContacts = async (page) => {
   await page.goto(contacts, { waitUntil: 'domcontentloaded' })
-  logger.http('Contacts opened')
+  logger.info('Contacts opened')
 }
 
 const nextContactsPage = async (page, limit) => {
   constactPageCounter++
   await page.goto(`${contacts}&page=${constactPageCounter}`, { waitUntil: 'domcontentloaded' })
-  logger.http(`Opened ${constactPageCounter}/${limit} contact page`)
+  logger.info(`Opened ${constactPageCounter}/${limit} contact page`)
+  addLog({type: 'info', message: `Opened ${constactPageCounter}/${limit} contact page`})
 }
 
 const getMaxContactPages = async (page) => {
@@ -22,7 +24,7 @@ const getMaxContactPages = async (page) => {
   await page.waitForSelector(maxContactPages)
   const maxPagesHandler = await page.$(maxContactPages)
   const maxPages = await page.evaluate(maxPagesHandler => maxPagesHandler.textContent, maxPagesHandler)
-  logger.http(`${maxPages} pages with contacts`)
+  logger.info(`${maxPages} pages with contacts`)
   return Number(maxPages)
 }
 
@@ -37,7 +39,8 @@ const runBot = async (browser, page, runConfig) => {
   }
   
   //TODO: followup
-  logger.http('Done.')
+  logger.info('Work done.')
+  addLog({type: 'info', message: 'Job done'})
   stopBot()
 }
 
