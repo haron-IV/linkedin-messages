@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 .logs {
   width: 90%;
   display: flex;
@@ -41,36 +41,36 @@ export default {
   color: #fff;
   font-size: 1rem;
   text-shadow: 2px 2px 4px #000;
-  &__wrap {
-    width: 100%;
-    min-height: 50px;
-    max-height: 350px;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column-reverse;
-    &::-webkit-scrollbar {
-      width: 0px;
-      background: transparent; /* make scrollbar transparent */
-    }
-   .log {
-     margin: 3px 0;
-     border: 1px #000 solid;
-     border-width: 1px 0;
-     border-radius: 3px;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     padding: .5rem 1rem;
-     .time {
-       font-weight: bold;
-     }
-     &--info {
-       background-color: rgb(169, 231, 196);
-     }
-     &--error {
-      background-color: rgb(237, 200, 200)
-     }
-   }
-  }
+}
+.logs__wrap {
+  width: 100%;
+  min-height: 50px;
+  max-height: 350px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+}
+.logs__wrap::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+.logs__wrap .log {
+  margin: 3px 0;
+  border: 1px #000 solid;
+  border-width: 1px 0;
+  border-radius: 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .5rem 1rem;
+}
+.logs__wrap .log .time {
+  font-weight: bold;
+}
+.logs__wrap .log--info {
+  background-color: rgb(169, 231, 196);
+}
+.logs__wrap .log--error {
+  background-color: rgb(237, 200, 200)
 }
 </style>
