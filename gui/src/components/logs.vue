@@ -21,7 +21,10 @@ import uniq from 'lodash.uniqby'
 export default {
   setup(_, {root: { $store, $axios }}) {
     const logs = computed(() => $store.getters['getLogs'])
-    watch(logs, () => document.querySelector('#logs' () => {}))
+    
+    watch(logs, () =>  {
+      if (document.querySelector('#logs')) document.querySelector('#logs').scrollTop = -document.querySelector('#logs').scrollHeight;
+    })
     
     return { logs }
   }

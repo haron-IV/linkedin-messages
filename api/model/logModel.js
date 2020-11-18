@@ -2,15 +2,13 @@ const mongoose = require('mongoose')
 
 const logSchema = new mongoose.Schema({
   type: String,
-  // date: {
-  //   type: Date,
-  //   default: new Date
-  // },
   message: String
 },
 {
   timestamps: true
 })
+
+logSchema.index({index: 1})
 
 const Log = mongoose.model('log', logSchema)
 

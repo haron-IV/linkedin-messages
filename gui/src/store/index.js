@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import uniqBy from 'lodash.uniqby'
 
 Vue.use(Vuex)
 
@@ -58,9 +59,7 @@ export default new Vuex.Store({
       if (state.logs.length <= 1) {
         state.logs = payload
       } else {
-        const lastLog = state.logs.slice(-1)[0]
-        const newLogs = state.logs.filter(log => Date.parse(log.createdAt) > Date.parse(lastLog.createdAt) ? log : null)
-        const updatedLogs = [...state.logs, ...newLogs]
+        const updatedLogs = uniqBy([...state.logs, ...payload], '_id')
         state.logs = updatedLogs.sort((a, b) => {
           const dateA = new Date(a.createdAt)
           const dateB = new Date(b.createdAt)
