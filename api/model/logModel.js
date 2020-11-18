@@ -8,8 +8,6 @@ const logSchema = new mongoose.Schema({
   timestamps: true
 })
 
-logSchema.index({index: 1})
-
 const Log = mongoose.model('log', logSchema)
 
 module.exports = Log

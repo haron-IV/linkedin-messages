@@ -15,11 +15,9 @@ const userSchema = new mongoose.Schema({
   },
   gender: {
     type: String
-  },
-  date: {
-    type: Date,
-    default: new Date
   }
+}, {
+  timestamps: true
 })
 
 const User = mongoose.model('user', userSchema)

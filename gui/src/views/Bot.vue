@@ -67,7 +67,7 @@ export default {
 
     setInterval(() => {
       updateInfo()
-    }, 5000);
+    }, 15000);
 
     return { showInterface, runBot, runBotState }
   }

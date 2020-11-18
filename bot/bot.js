@@ -34,13 +34,13 @@ const runBot = async (browser, page, runConfig) => {
   const contactPagesLimit = await getMaxContactPages(page)
 
   while(counter <= limit && constactPageCounter < contactPagesLimit) { // if limit will reach or users list will end 
-    await messageLoop(page, runConfig, counter)
+    await messageLoop(page, runConfig, counter, limit)
     await nextContactsPage(page, contactPagesLimit)
   }
   
   //TODO: followup
   logger.info('Work done.')
-  addLog({type: 'info', message: 'Job done'})
+  addLog({type: 'info', message: 'Job done.'})
   stopBot()
 }
 

@@ -12,6 +12,7 @@ const {
     waitTImeAfterMessage
   } 
 } = require('./utils')
+const { count } = require('../api/model/logModel')
 
 const openProfile = async (page, profileLink) => {  
   logger.info(`Profile openend -> ${profileLink}`)
@@ -27,25 +28,30 @@ const openMessageWindow = async (page) => {
 
 const sendMessage = async (page, message, user) => {
   await page.keyboard.type(message)
-  // await page.click(sendMessageBtn) //TODO: uncomment this for production
-  logger.info(`Message send to: ${user.fullName}`)
-  addLog({type: 'info', message: `Message send to: ${user.fullName}`})
-  saveUserInfo(user)
+  if (message.length > 3) {
+    await page.click(sendMessageBtn)
+    logger.info(`Message send to: ${user.fullName}`)
+    addLog({type: 'info', message: `Message send to: ${user.fullName}`})
+    saveUserInfo(user)
+  } else {
+    logger.info(`Message to short to send.`)
+  }
 }
 
-const messageLoop = async (page, runConfig, counter) => { 
+const messageLoop = async (page, runConfig, counter, limit) => { 
   logger.info('Message loop')
   
   const selectedUsers = await selectUserToSendMsg(page, runConfig) // select users from actual page
-  for (const user of selectedUsers) {
-    if (!await getUserByProfileLink(user.profileLink)) {
+  for (const user of selectedUsers) {  
+    if (!await getUserByProfileLink(user.profileHref) && counter <= limit) {
       await openProfile(page, user.profileHref)
       await openMessageWindow(page)
       await sendMessage(page, runConfig.runConfig.message, user)
       counter++;
       await page.waitFor(waitTImeAfterMessage)
+    } else {
+      logger.info(`User ${user.fullName} already used`)
     }
-    logger.info(`User ${user.fullName} already used`)
   }
 }
 
