@@ -25,7 +25,7 @@ todo:
   - stop on request (close browser) ✅
 
 * production
-  - configure nginx for API
+  - configure ngrok for API ✅
 
 * Interface
   * add auth to api page ✅
@@ -38,24 +38,20 @@ todo:
     - start / stop bot✅
     - connect request stop bot to button ✅
     - bot status ✅
+  * add netlify automatic build
+  * add detector for local and web env
 
 
 * server:
- - add ngrok
+ - add ngrok ✅
 
-
-
-    ngnx
-    https://medium.com/@panzelva/deploying-express-js-website-to-vps-with-nginx-pm2-and-ubuntu-18-04-8c5d32593211
-
-
-    guide:
-    - git clone
-    - npm i
-    - cd to project
-    - mkdir /logs
-    - cd /logs && touch logs.log
-    downoad ngrok
-    download forever
-    start api: forever --uid libot start node ./index.js
-    start ngrok: ./ngrok http 9090 -log=stdout > li_bot_ngork.log &
+## guide:
+- git clone
+- npm i
+- cd to project
+- mkdir /logs
+- cd /logs && touch logs.log
+downoad ngrok
+download forever
+start api: forever --uid libot start node ./index.js
+start ngrok: ./ngrok http 9090 -log=stdout > li_bot_ngork.log &
