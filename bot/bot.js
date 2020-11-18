@@ -1,5 +1,6 @@
 const { cfg: { url: { contacts } } } = require('./utils')
 let { cfg: { constactPageCounter } } = require('./utils')
+const  { stopBot } = require('./utils')
 const { maxContactPages } = require('./elements')
 const logger = require('../api/logger')
 const { messageLoop } = require('./messageSender')
@@ -29,7 +30,7 @@ const runBot = async (browser, page, runConfig) => {
   const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
   const contactPagesLimit = await getMaxContactPages(page)
-  
+
   while(counter <= limit && constactPageCounter < contactPagesLimit) { // if limit will reach or users list will end 
     await messageLoop(page, runConfig, counter)
     await nextContactsPage(page, contactPagesLimit)
@@ -37,7 +38,7 @@ const runBot = async (browser, page, runConfig) => {
   
   //TODO: followup
   logger.http('Done.')
-  await browser.close()
+  stopBot()
 }
 
 module.exports = { runBot }

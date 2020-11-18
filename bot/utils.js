@@ -41,4 +41,31 @@ const delay = timeout => {
 
 const extractNameFromFullName = (fullName) => fullName?.split(',')[0] ? fullName?.split(',')[0] : null
 
-module.exports = { closeBrowser, closePage, browserConfig, cfg, delay, extractNameFromFullName }
+let browser = null
+const getBrowser = async () => browser
+const setBrowser = async (b) => { browser = b }
+
+let botStatus = false
+const setBotStatus = (status) => botStatus = status
+const getBotStatus = () => botStatus
+
+const stopBot = async () => {
+  const b = await getBrowser()
+  b.browser.close()
+  logger.http('Stop bot.')
+  setBotStatus(false)
+}
+
+module.exports = { 
+  closeBrowser,
+  closePage,
+  browserConfig,
+  cfg,
+  delay,
+  extractNameFromFullName,
+  stopBot,
+  setBotStatus,
+  getBotStatus,
+  getBrowser,
+  setBrowser
+}

@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { start, stop, getBotStatus } = require('../../bot/index')
-const logger = require('../logger')
+const { start } = require('../../bot/index')
+const { stopBot, getBotStatus } = require('../../bot/utils')
 
 router.post('/start', async (req, res) => {
-  logger.info('Start bot.')
   res.status(200).json({ msg: 'Bot started' })
   const runConfig = req.body
 
@@ -12,14 +11,11 @@ router.post('/start', async (req, res) => {
 })
 
 router.get('/stop', async (req, res) => {
-  logger.http('Stop bot.')
-  stop()
+  stopBot()
   res.status(200).json({ msg: 'Bot stopped' })
 })
 
-router.get('/status', async (req, res) => {
-  logger.http('Get status')
-  
+router.get('/status', async (req, res) => { 
   res.status(200).json({ msg: { isBotRunning: getBotStatus() } })
 })
 

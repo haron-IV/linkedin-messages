@@ -1,15 +1,9 @@
 require('dotenv').config({ path: '../.env'})
 const puppeteer = require('puppeteer')
 const logger = require('../api/logger')
-const { browserConfig } = require('./utils')
+const { browserConfig, setBotStatus, setBrowser, getBrowser } = require('./utils')
 const login = require('./login')
 const { runBot } = require('./bot')
-
-let browser = null
-let botStatus = false
-
-const getBotStatus = () => botStatus
-const setBotStatus = (status) => botStatus = status
 
 const Browser = async () => {
   const browser = await puppeteer.launch(browserConfig())
@@ -27,13 +21,14 @@ const openLI = async (page) => {
 }
 
 const start = async (runConfig) => {
-  browser = await Browser()
+  logger.info('Start bot.')
+  const b = await Browser()
+  await setBrowser(b)
   setBotStatus(true)
-  await openLI(browser.page)
-  await login(browser.page, runConfig)
-  await runBot(browser.browser, browser.page, runConfig)
+
+  await openLI(b.page)
+  await login(b.page, runConfig)
+  await runBot(b.browser, b.page, runConfig)
 }
 
-const stop = async () => { browser.browser.close() }
-
-module.exports = { start, stop, getBotStatus, setBotStatus }
+module.exports = { start }
