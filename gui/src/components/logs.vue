@@ -3,69 +3,27 @@
     <div class="logs__wrap" id="logs" v-if="logs.length > 0">
       <div
         class="log"
-        :class="getLogClass(log)"
+        :class="log.type === 'info' ? 'log--info' : 'log--error'"
         v-for="(log, i) in logs"
         :key="i">
-        {{ log.msg }}
-        <span>{{log.time}}</span>
+        {{ log.message }}
+        <span>{{new Date(log.createdAt).toLocaleTimeString()}}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, watch } from '@vue/composition-api'
+import { computed, watch, ref } from '@vue/composition-api'
 import { api_url }  from '@/components/utils'
 import uniq from 'lodash.uniqby'
 
 export default {
   setup(_, {root: { $store, $axios }}) {
     const logs = computed(() => $store.getters['getLogs'])
-    const allLogs = computed(() => $store.state.logInfo)
-    watch(logs, () => {
-      if (document.querySelector('#logs')) document.querySelector('#logs').scrollTop = -document.querySelector('#logs').scrollHeight;
-    })
-
-    const mapLog = (log) => {
-      return {
-        msg: log.message,
-        time: log.timestamp,
-        type: log.level,
-        i: log.i
-      }
-    }
-    const botStarted = computed(() => $store.state.botStarted) 
-    watch(botStarted, val => {
-      if (val) { 
-        getLogs()
-        setInterval(() => { getLogs() }, 60000)
-      }
-    })
-
-    const getLogs = () => {
-      $axios.get(`${api_url.local}/logs`).then(res => {
-        const logs = JSON.parse(`[${res.data.text.slice(0, -2)}]`)
-        
-        if (logs.pop()?.i > $store.state.lastApiLog?.i) {
-          const info = logs.filter(log => log.level === "http").map(el => mapLog(el))
-          
-          if ($store.state.logInfo) {
-            const onlyNew = uniq([...info, ...allLogs.value], 'i')
-            if (onlyNew.length > 0) $store.commit('updateLogs', onlyNew.sort((a,b) => {
-              return new Date(b.time) - new Date(a.time)
-            }))
-          } else {
-            $store.commit('addLog', info)
-          }
-        
-        }
-        $store.commit('setLastApiLog', logs.pop())
-      })
-    }
-
-    const getLogClass = (log) => (log.type === 'http' || log.type === 'info') ? 'log--info' : 'log--error'
-
-    return { logs, getLogClass }
+    watch(logs, () => document.querySelector('#logs' () => {}))
+    
+    return { logs }
   }
 }
 </script>
@@ -78,7 +36,7 @@ export default {
   margin: 2rem 0;
   padding: 1rem;
   color: #fff;
-  font-size: 1.15rem;
+  font-size: 1rem;
   text-shadow: 2px 2px 4px #000;
   &__wrap {
     width: 100%;

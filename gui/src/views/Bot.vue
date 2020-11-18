@@ -9,7 +9,7 @@
     <login-form />
     <configuration-form />
 
-    <button class="btn-lg" :class="runBotState || botStatus ? 'btn-danger' : 'btn-success' " @click="runBot()">{{ runBotState ? 'Stop' : 'Start' }}</button>
+    <button class="btn-lg" :class="runBotState ? 'btn-danger' : 'btn-success' " @click="runBot()">{{ runBotState ? 'Stop' : 'Start' }}</button>
     <logs />
   </div>
 </template>
@@ -39,31 +39,35 @@ export default {
       
       return cfg
     })
+
     const runBotState = computed(() => $store.state.botStarted)
+
     const runBot = () => {
       saveUserCred(user.value)
+
       if(!runBotState.value) {
         $axios.post(`${api_url.local}/runner/start`, { ...user.value, runConfig: runConfig.value })
         .then(res => {
-          if(res.status === 200) $store.commit('addLog', createLog('info', res.data.msg))
-          else $store.commit('addError', createLog('error', res.data.msg))
+          // if(res.status === 200) {}
+          // else {}
         })
-        .catch(err => { console.log(err); $store.commit('addError', createLog('error', err.data.msg)) })
+        .catch(err => { console.log(err) })
       } else {
-        $axios.get(`${api_url.local}/runner/stop`).then(res => { console.log(res);}) // push log
+        $axios.get(`${api_url.local}/runner/stop`).then(res => { console.log(res) }) // push log
       }
       $store.commit('toggleBotStarted')
     }
 
-    const getBotStatus = () => {
-      $axios.get(`${api_url.local}/runner/status`).then(res => {
-        $store.commit('setBotStarted', res.data.msg.isBotRunning)
+    const updateInfo = () => {
+      $axios.get(`${api_url.local}/update`).then( res => {
+        $store.commit('setBotStarted', res.data.botStatus)
+        $store.commit('updateLogs', res.data.logs)
       })
     }
 
     setInterval(() => {
-      getBotStatus()  
-    }, 5000);
+      updateInfo()
+    }, 15000);
 
     return { showInterface, runBot, runBotState }
   }

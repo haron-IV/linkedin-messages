@@ -10,8 +10,7 @@ export default new Vuex.Store({
       password: '',
       remember: false
     },
-    errors: [],
-    logInfo: [],
+    logs: [],
     lastApiLog: null,
     botStarted: false,
     runConfig: {
@@ -44,28 +43,6 @@ export default new Vuex.Store({
     setLogin(state, payload) { state.user.login = payload },
     setPassword(state, payload) { state.user.password = payload },
     setRemember(state, payload) { state.user.remember = payload },
-    addError(state, payload) { 
-      if (payload.length >= 1) {
-        state.errors = [...state.errors, ...payload]
-      } else {
-        state.errors.push(payload) 
-      }
-    },
-    addLog(state, payload) { 
-      if (payload.length >= 1) {
-        state.logInfo = [...state.logInfo, ...payload]  
-      } else {
-        state.logInfo.push(payload) 
-      }
-    },
-    updateLogs(state, payload) {
-      if (payload.length >= 1) {
-        state.logInfo = []
-        state.logInfo = [...payload]
-      } else {
-        state.logInfo.push(payload) 
-      }
-    },
     setGender(state, payload) { state.runConfig.gender = payload },
     toggleRegion(state, regionName) { 
       const region = state.runConfig.regions.find(region => region.name === regionName)
@@ -76,13 +53,29 @@ export default new Vuex.Store({
     setBotStarted(state, payload) { state.botStarted = payload },
     setMessage( state, payload) { state.runConfig.message = payload },
     setFollowupMessage(state, payload) { state.runConfig.followupMessage = payload },
-    setmessagesLimit(state, payload) { state.runConfig.messagesLimit = payload }
+    setmessagesLimit(state, payload) { state.runConfig.messagesLimit = payload },
+    updateLogs(state, payload) {
+      if (state.logs.length <= 1) {
+        state.logs = payload
+      } else {
+        const lastLog = state.logs.slice(-1)[0]
+        const newLogs = state.logs.filter(log => Date.parse(log.createdAt) > Date.parse(lastLog.createdAt) ? log : null)
+        const updatedLogs = [...state.logs, ...newLogs]
+        state.logs = updatedLogs.sort((a, b) => {
+          const dateA = new Date(a.createdAt)
+          const dateB = new Date(b.createdAt)
+
+          return dateA - dateB
+        })
+      }
+    }
   },
-  actions: {
-  },
+  actions: {},
   getters: {
-    getLogs: state => state.logInfo.concat(state.errors)
+    getLogs: (state) => state.logs.map(log => {
+      log.date = new Date(log.date)
+      return log
+    })
   },
-  modules: {
-  }
+  modules: {}
 })

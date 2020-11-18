@@ -5,14 +5,12 @@ const addLog = async (logInfo) => {
   const log = new Log({...logInfo})
 
   await log.save()
-  .then(() => {
-    logger.info('Log saved in db')
-  })
+  .then(() => {})
   .catch(err => {
     logger.error('Cannot save log')
   })
 }
 
-const getLogs = async () => Log.find({})
+const getLogs = async () => Log.find({}).sort({_id: -1}).limit(5)
 
 module.exports = { addLog, getLogs }
