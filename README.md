@@ -7,7 +7,7 @@ todo:
   - save test data ✅
   - add route for start bot ✅
   - add route for stop bot✅
-  - add route to check bot status
+  - add route to check bot status ✅
   - add collecting logs for get it from front ✅
 
 
@@ -37,7 +37,7 @@ todo:
     - tresc wiadomosci✅ 
     - start / stop bot✅
     - connect request stop bot to button ✅
-    - bot status
+    - bot status ✅
 
 
     ngnx
