@@ -1,6 +1,11 @@
 <template>
   <div v-if="showInterface" class="container">
-    <h1>LinkedIn Message Bot</h1>
+    <header>
+      <h1>LinkedIn Message Bot</h1>
+      <div>status<span :class="{'status--on': botStatus}"></span></div>
+      
+    </header>
+    
     <login-form />
     <configuration-form />
 
@@ -45,17 +50,48 @@ export default {
         })
         .catch(err => { console.log(err); $store.commit('addError', createLog('error', err.data.msg)) })
       } else {
-        //TODO: stop bot code
+        $axios.get(`${api_url.local}/runner/stop`).then(res => { console.log(res);}) // push log
       }
       $store.commit('toggleBotStarted')
     }
 
-    return { showInterface, runBot, runBotState }
+    const botStatus = ref(false)
+    const getBotStatus = () => {
+      $axios.get(`${api_url.local}/runner/status`).then(res => {
+        botStatus.value = res.data.msg.isBotRunning
+      })
+    }
+
+    setInterval(() => {
+      getBotStatus()  
+    }, 5000);
+
+    return { showInterface, runBot, runBotState, botStatus }
   }
 }
 </script>
 
 <style>
+header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+header div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.status--on {
+  background-color: springgreen;
+}
+header div span {
+  width: 20px;
+  height: 20px;
+  display: block;
+  background-color: red;
+  border-radius: 50%;
+}
 .container {
   display: flex;
   flex-direction: column;

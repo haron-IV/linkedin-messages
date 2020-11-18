@@ -5,7 +5,12 @@ const { browserConfig } = require('./utils')
 const login = require('./login')
 const { runBot } = require('./bot')
 
-let browser = null;
+let browser = null
+let botStatus = false
+
+const getBotStatus = () => botStatus
+const setBotStatus = (status) => botStatus = status
+
 const Browser = async () => {
   const browser = await puppeteer.launch(browserConfig())
   const page = await browser.newPage()
@@ -23,7 +28,7 @@ const openLI = async (page) => {
 
 const start = async (runConfig) => {
   browser = await Browser()
-
+  setBotStatus(true)
   await openLI(browser.page)
   await login(browser.page, runConfig)
   await runBot(browser.browser, browser.page, runConfig)
@@ -31,4 +36,4 @@ const start = async (runConfig) => {
 
 const stop = async () => { browser.browser.close() }
 
-module.exports = { start, stop }
+module.exports = { start, stop, getBotStatus, setBotStatus }

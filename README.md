@@ -36,6 +36,7 @@ todo:
     - pole wyboru wysylaj do: plec, woje., ✅ 
     - tresc wiadomosci✅ 
     - start / stop bot✅
+    - connect request stop bot to button ✅
     - bot status
 
 
