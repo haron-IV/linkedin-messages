@@ -1,6 +1,6 @@
 const api_url = {
   local: 'http://localhost:9090',
-  prod: 'http://96231f4c7749.ngrok.io'
+  prod: 'https://96231f4c7749.ngrok.io'
 }
 
 const getApiUrl = (window) => window.location.href.includes('localhost') ? api_url.local : api_url.prod
