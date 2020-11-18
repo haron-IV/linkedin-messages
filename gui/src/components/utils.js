@@ -3,6 +3,10 @@ const api_url = {
   prod: 'http://96231f4c7749.ngrok.io'
 }
 
+const getEnv = () => {
+  
+}
+
 const getCookie = () => document.cookie.split(';')
 const saveUserCred = (user) => {
   localStorage.setItem('user', JSON.stringify(user))
