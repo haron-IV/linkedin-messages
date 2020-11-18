@@ -17,7 +17,7 @@
 <script>
 import Logs from '../components/logs.vue'
 import LoginForm from '../components/login-form.vue'
-import { getCookie, saveUserCred, getUserCred, api_url, createLog } from '@/components/utils'
+import { getCookie, saveUserCred, getUserCred, getApiUrl, createLog } from '@/components/utils'
 import { computed, onMounted, reactive, ref } from '@vue/composition-api'
 import ConfigurationForm from '../components/configuration-form.vue'
 
@@ -46,20 +46,20 @@ export default {
       saveUserCred(user.value)
 
       if(!runBotState.value) {
-        $axios.post(`${api_url.local}/runner/start`, { ...user.value, runConfig: runConfig.value })
+        $axios.post(`${getApiUrl(window)}/runner/start`, { ...user.value, runConfig: runConfig.value })
         .then(res => {
           // if(res.status === 200) {}
           // else {}
         })
         .catch(err => { console.log(err) })
       } else {
-        $axios.get(`${api_url.local}/runner/stop`).then(res => { console.log(res) }) // push log
+        $axios.get(`${getApiUrl(window)}/runner/stop`).then(res => { console.log(res) }) // push log
       }
       $store.commit('toggleBotStarted')
     }
 
     const updateInfo = () => {
-      $axios.get(`${api_url.local}/update`).then( res => {
+      $axios.get(`${getApiUrl(window)}/update`).then( res => {
         $store.commit('setBotStarted', res.data.botStatus)
         $store.commit('updateLogs', res.data.logs)
       })

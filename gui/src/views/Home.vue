@@ -13,6 +13,7 @@
 
 <script>
 import { ref, computed } from '@vue/composition-api'
+import { getApiUrl } from '@/components/utils'
 
 export default {
   setup(_, { root: { $axios, $router } }) {
@@ -20,7 +21,7 @@ export default {
     const info = ref('')
 
     const auth = () => {
-      $axios.post('http://localhost:9090/auth', {
+      $axios.post(`${getApiUrl(window)}/auth`, {
         authKey: authKey.value,
         type: "user"
       })

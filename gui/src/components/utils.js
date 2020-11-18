@@ -3,9 +3,7 @@ const api_url = {
   prod: 'http://96231f4c7749.ngrok.io'
 }
 
-const getEnv = () => {
-  
-}
+const getApiUrl = (window) => window.location.href.includes('localhost') ? api_url.local : api_url.prod
 
 const getCookie = () => document.cookie.split(';')
 const saveUserCred = (user) => {
@@ -22,4 +20,4 @@ const createLog = ( type, msg ) => {
   }
 }
 
-export { getCookie, saveUserCred, getUserCred, api_url, createLog }
+export { getCookie, saveUserCred, getUserCred, api_url, createLog, getApiUrl }
