@@ -37,12 +37,19 @@ const checkLogin = async (page) => {
     //   // const form = forms[0]
     //   const htmlF = await page.evaluate(form, form.innerHTML, form)  
     //   logger.info(`${htmlF}`)
-      const tt1 = await page.$('form:nth-child(1)')
-      const el1 = await page.evaluate(tt1 => tt1.innerHTML, tt1)
-      logger.info(el1)
-      const tt2 = await page.$$('form:nth-child(2)')
-      const el2 = await page.evaluate(tt2 => tt2.innerHTML, tt2)
-      logger.info(el2)
+      // const tt1 = await page.$('form:nth-child(1)')
+      // const el1 = await page.evaluate(tt1 => tt1.innerHTML, tt1)
+      // logger.info(el1)
+      // const tt2 = await page.$$('form:nth-child(2)')
+      // const el2 = await page.evaluate(tt2 => tt2.innerHTML, tt2)
+      // logger.info(el2)
+
+      logger.info('----------------')
+
+      const b = await page.$('body')
+      const eb = await page.evaluate(b => b.innerHTML, b)
+
+      logger.info(eb)
     // }
   // }
     
