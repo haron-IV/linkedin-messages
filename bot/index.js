@@ -30,7 +30,7 @@ const start = async (runConfig) => {
 
     await openLI(b.page)
     await login(b.page, runConfig)
-    await checkLogin(b.page)
+    // await checkLogin(b.page)
     logger.info(`page href: ${u}`)
     await runBot(b.browser, b.page, runConfig)
   } catch (err) {
