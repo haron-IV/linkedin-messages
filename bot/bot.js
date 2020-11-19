@@ -28,8 +28,8 @@ const getMaxContactPages = async (page) => {
     maxPagesHandler = await page.$(maxContactPages)
     maxPages = await page.evaluate(maxPagesHandler => maxPagesHandler.textContent, maxPagesHandler)  
   } catch {
-    logger.info(`Cannot load max contact pages, set default value ${maxPages}`)
     maxPages = 10
+    logger.info(`Cannot load max contact pages, set default value ${maxPages}`)
     logger.info(`${maxPages} pages with contacts`)
     return Number(maxPages)
   }
