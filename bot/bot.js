@@ -10,6 +10,7 @@ let counter = 0
 const openContacts = async (page) => {
   await page.goto(contacts, { waitUntil: 'domcontentloaded' })
   logger.info('Contacts opened')
+  await page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
 }
 
 const nextContactsPage = async (page, limit) => {
@@ -40,7 +41,7 @@ const getMaxContactPages = async (page) => {
 const runBot = async (browser, page, runConfig) => {
   const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
-  await page.screenshot({path: './screenshot1.png'});
+  await page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
   const contactPagesLimit = await getMaxContactPages(page)
   while(counter <= limit && constactPageCounter < contactPagesLimit) { // if limit will reach or users list will end 
     await messageLoop(page, runConfig, counter, limit)
