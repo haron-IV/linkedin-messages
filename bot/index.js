@@ -21,20 +21,12 @@ const openLI = async (page) => {
   addLog({type: 'info', message: 'Linkedin opened.'})
 }
 
-// const catchErrors = (browser) => {
-//   browser.page.on('pageerror', perr => {
-//     logger.error(perr)
-//     addLog({type: 'error', message: 'Error'})
-//   })
-// }
-
 const start = async (runConfig) => {
   try {
     logger.info('Start bot.')
     const b = await Browser()
     await setBrowser(b)
     setBotStatus(true)
-    // catchErrors(b)
 
     await openLI(b.page)
     await login(b.page, runConfig)

@@ -22,7 +22,7 @@ const nextContactsPage = async (page, limit) => {
 const getMaxContactPages = async (page) => {
   await page.evaluate(() => window.scrollTo(0,document.body.scrollHeight))
   let maxPagesHandler = null
-  const maxPages = null
+  let maxPages = null
   try {
     await page.waitForSelector(maxContactPages)
     maxPagesHandler = await page.$(maxContactPages)
