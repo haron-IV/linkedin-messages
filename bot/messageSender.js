@@ -39,7 +39,7 @@ const sendMessage = async (page, message, user) => {
 }
 
 const messageLoop = async (page, runConfig, counter, limit) => { 
-  logger.info('Message loop')
+  logger.info(`Message loop for: ${limit} messages`)
   
   const selectedUsers = await selectUserToSendMsg(page, runConfig) // select users from actual page
   for (const user of selectedUsers) {  

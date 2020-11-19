@@ -32,6 +32,7 @@ const getMaxContactPages = async (page) => {
     maxPages = 10
     logger.info(`Cannot load max contact pages, set default value ${maxPages}`)
     logger.info(`${maxPages} pages with contacts`)
+  } finally {
     return Number(maxPages)
   }
 }
@@ -39,11 +40,8 @@ const getMaxContactPages = async (page) => {
 const runBot = async (browser, page, runConfig) => {
   const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
-  logger.info('step 1')
   const contactPagesLimit = await getMaxContactPages(page)
-  logger.info('step 2')
   while(counter <= limit && constactPageCounter < contactPagesLimit) { // if limit will reach or users list will end 
-    logger.info('step 3')
     await messageLoop(page, runConfig, counter, limit)
     await nextContactsPage(page, contactPagesLimit)
   }
