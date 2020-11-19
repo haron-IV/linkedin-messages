@@ -10,7 +10,7 @@ const db_cfg = {
 
 const connectDB = () => {
   mongoose.connect(`${DB_HOST}/${DB_NAME}`, db_cfg, () => {
-    logger.info('Db connected')
+    logger.info(`${DB_HOST}/${DB_NAME}`)
   })
 }
 
