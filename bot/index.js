@@ -29,9 +29,9 @@ const start = async (runConfig) => {
     setBotStatus(true)
 
     await openLI(b.page)
-    await page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
+    await b.page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
     await login(b.page, runConfig)
-    await page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
+    await b.page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
     await runBot(b.browser, b.page, runConfig)
   } catch (err) {
     logger.error(err)
