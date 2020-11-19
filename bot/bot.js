@@ -30,10 +30,9 @@ const getMaxContactPages = async (page) => {
   } catch {
     logger.info(`Cannot load max contact pages, set default value ${maxPages}`)
     maxPages = 10
+    logger.info(`${maxPages} pages with contacts`)
+    return Number(maxPages)
   }
-  
-  logger.info(`${maxPages} pages with contacts`)
-  return Number(maxPages)
 }
 
 const runBot = async (browser, page, runConfig) => {
