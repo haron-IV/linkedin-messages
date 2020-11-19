@@ -20,12 +20,17 @@ const nextContactsPage = async (page, limit) => {
 }
 
 const getMaxContactPages = async (page) => {
-  logger.info('step 1.1')
   await page.evaluate(() => window.scrollTo(0,document.body.scrollHeight))
-  logger.info('step 1.2')
-  await page.waitForSelector(maxContactPages)
+  let maxPagesHandler = null;
+  await page.waitForSelector(maxContactPages).then(res => {
+    maxPagesHandler = await page.$(maxContactPages)
+  }).catch(err => {
+    logger.error(err)
+    await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
+    await getMaxContactPages(page)
+  })
   logger.info('step 1.3')
-  const maxPagesHandler = await page.$(maxContactPages)
+  
   logger.info('step 1.4')
   const maxPages = await page.evaluate(maxPagesHandler => maxPagesHandler.textContent, maxPagesHandler)
   logger.info('step 1.5')
