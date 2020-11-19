@@ -31,10 +31,12 @@ const checkLogin = async (page) => {
   const url = await page.url()
   if (url.includes('challenge')) {
     const forms = await page.$$('form')
-    for (const form of forms) {
-      const htmlF = await page.evaluate(form, form.innerHtml, form)
+    logger.info(`Forms ${forms.length}`)
+    forms.forEach(form => {
+      const htmlF = await page.evaluate(form, form.innerHtml, form)  
       logger.info(`${htmlF}`)
-    }
+    });
+  }
     
     // const passwords = await page.$$('input[type=password]')
 
