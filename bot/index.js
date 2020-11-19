@@ -23,20 +23,27 @@ const openLI = async (page) => {
 
 const catchErrors = (browser) => {
   browser.page.on('pageerror', perr => {
+    logger.error(perr)
     addLog({type: 'error', message: 'Error'})
   })
 }
 
 const start = async (runConfig) => {
-  logger.info('Start bot.')
-  const b = await Browser()
-  await setBrowser(b)
-  setBotStatus(true)
-  catchErrors(b)
+  try {
+    logger.info('Start bot.')
+    const b = await Browser()
+    await setBrowser(b)
+    setBotStatus(true)
+    catchErrors(b)
 
-  await openLI(b.page)
-  await login(b.page, runConfig)
-  await runBot(b.browser, b.page, runConfig)
+    await openLI(b.page)
+    await login(b.page, runConfig)
+    await runBot(b.browser, b.page, runConfig)
+  } catch (err) {
+    logger.error(err)
+    addLog({type: 'error', message: 'Error bot will started again'})
+  }
+  
 }
 
 module.exports = { start }
