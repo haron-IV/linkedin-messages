@@ -32,7 +32,7 @@ const start = async (runConfig) => {
     await b.page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
     await login(b.page, runConfig)
     await b.page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
-    const u = await page.url()
+    const u = await b.page.url()
     logger.info(`page href: ${u}`)
     await runBot(b.browser, b.page, runConfig)
   } catch (err) {
