@@ -27,4 +27,14 @@ const login = async (page, runConfig) => {
   addLog({type: 'info', message: 'User logged in.'})
 }
 
-module.exports = login
+const checkLogin = async (page) => {
+  const url = await page.url()
+  if (url.includes('challenge')) {
+    const emails = await page.$$('input[type=email]')
+    const passwords = await page.$$('input[type=password]')
+
+    logger.info(`email inputs: ${emails.length} | passwords inputs: ${passwords.length}`)
+  }
+}
+
+module.exports = { login, checkLogin }

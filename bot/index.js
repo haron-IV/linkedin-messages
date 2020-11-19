@@ -2,7 +2,7 @@ require('dotenv').config({ path: '../.env'})
 const puppeteer = require('puppeteer')
 const logger = require('../api/logger')
 const { browserConfig, setBotStatus, setBrowser, getBrowser } = require('./utils')
-const login = require('./login')
+const { login, checkLogin } = require('./login')
 const { runBot } = require('./bot')
 const { addLog } = require('../api/service/logService')
 
@@ -29,10 +29,8 @@ const start = async (runConfig) => {
     setBotStatus(true)
 
     await openLI(b.page)
-    await b.page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
     await login(b.page, runConfig)
-    await b.page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
-    const u = await b.page.url()
+    await checkLogin(b.page)
     logger.info(`page href: ${u}`)
     await runBot(b.browser, b.page, runConfig)
   } catch (err) {
