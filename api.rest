@@ -11,16 +11,38 @@ Content-Type: application/json
 GET https://api.genderize.io/?name=teodor
 
 ### 
-GET  http://localhost:9090/logs
+GET  https://5e3b4a1aad2b.ngrok.io/logs
 
 ### 
-GET http://localhost:9090/runner/stop
+GET https://5e3b4a1aad2b.ngrok.io/runner/stop
 
 ###
-GET http://localhost:9090/runner/status
+GET https://5e3b4a1aad2b.ngrok.io/runner/status
 
 ###
-GET http://localhost:9090/update
+GET https://5e3b4a1aad2b.ngrok.io/update
 
 ###
-GET https://96231f4c7749.ngrok.io/runner/status
+GET http:localhost:9090/runner/status
+
+###
+GET http://5e3b4a1aad2b.ngrok.io/runner/stop
+
+###
+POST https://5e3b4a1aad2b.ngrok.io/auth
+Content-Type: application/json
+
+{
+  "authKey": "767vg0s4",
+  "type": "user"
+}
+
+###
+
+POST http://96231f4c7749.ngrok.io/auth
+Content-Type: application/json
+
+{
+  "authKey": "767vg0s4",
+  "type": "user"
+}
