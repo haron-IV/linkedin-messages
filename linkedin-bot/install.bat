@@ -1,0 +1,1 @@
+npm install && npm install -g serve && mkdir logs && notepad ./logs/logs.log
