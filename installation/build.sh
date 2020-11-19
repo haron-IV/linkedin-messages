@@ -18,6 +18,11 @@ cp ./package.json ./linkedin-bot
 cp ./package-lock.json ./linkedin-bot
 cp ./.env ./linkedin-bot
 
+# create auth-key.txt file
+API_AUTH_KEY=$(grep API_AUTH_KEY= .env | xargs)
+KEY="${API_AUTH_KEY#*=}"
+echo $KEY >> ./linkedin-bot/auth-key.txt
+
 # create zip
 zip -vr bot.zip ./linkedin-bot
 rm /Users/$USER/Desktop/bot.zip
