@@ -24,7 +24,7 @@ const getMaxContactPages = async (page) => {
   let maxPagesHandler = null;
   await page.waitForSelector(maxContactPages).then(res => {
     maxPagesHandler = await page.$(maxContactPages)
-  }).catch(err => {
+  }).catch(async err => {
     logger.error(err)
     await page.reload({ waitUntil: ["networkidle0", "domcontentloaded"] });
     await getMaxContactPages(page)
