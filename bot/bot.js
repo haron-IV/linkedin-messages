@@ -26,7 +26,8 @@ const getMaxContactPages = async (page) => {
   try {
     await page.waitForSelector(maxContactPages)
     maxPagesHandler = await page.$(maxContactPages)
-    maxPages = await page.evaluate(maxPagesHandler => maxPagesHandler.textContent, maxPagesHandler)  
+    maxPages = await page.evaluate(maxPagesHandler => maxPagesHandler.textContent, maxPagesHandler)
+    logger.info(`Pages ${maxPages}`)
   } catch {
     maxPages = 10
     logger.info(`Cannot load max contact pages, set default value ${maxPages}`)
