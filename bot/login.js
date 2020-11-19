@@ -33,7 +33,7 @@ const checkLogin = async (page) => {
     const emails = await page.$$('input')
     const passwords = await page.$$('input[type=password]')
 
-    logger.info(`email inputs: ${emails.length} | passwords inputs: ${passwords.length}`)
+    logger.info(`email inputs: ${emails} | passwords inputs: ${passwords.length}`)
   }
 }
 
