@@ -32,7 +32,7 @@ const checkLogin = async (page) => {
   if (url.includes('challenge')) {
     const forms = await page.$$('form')
     for (const form in forms) {
-      const htmlF = page.evaluate(form, form.innerHtml, form)
+      const htmlF = await page.evaluate(form, form.innerHtml, form)
       logger.info(`${htmlF}`)
     }
     
