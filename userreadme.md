@@ -1,12 +1,12 @@
 # Instalacja bota:
 
 * Zainstaluj node.js: [https://nodejs.org/en/download/](https://nodejs.org/en/download/) podczas instalacji zaakceptuj wszystko.
+* Wypakuj plik `bot.zip`. Po wypakowaniu w wybranym miejscu pojawi się folder o nazwie `linkedin-bot`. Wejdź do niego i wykonaj ponizsze kroki.
 * Zainstaluj paczki niezbędne do uruchomienia bota, w tym celu kliknij 2 razy na plik `install` w folderze `linkedin-bot`
-* Jeśli otworzy Ci się okno z notatnikiem potwierdz utworzenie nowego pliku (jeśli tego nie zrobisz bot nie będzie działał) - po kliknięciu tak, mozesz zamknąć plik
-* Jeśli nie posiadasz przeglądatki chrome zainstaluj ją
-* uruchom bota klikając 2 razy na plik `bot` bot powinien otworzyć przeglądrkę z interfejsem
-* wprowadz kod autoryzacyjny. Znajduje się on w pliku `auth-key.txt`
-
+* Jeśli otworzy Ci się okno z notatnikiem potwierdz utworzenie nowego pliku (jeśli tego nie zrobisz bot nie będzie działał) - po kliknięciu `tak`, mozesz zamknąć plik.
+* Jeśli nie posiadasz przeglądatki chrome zainstaluj ją.
+* uruchom bota klikając 2 razy na plik `bot` bot powinien otworzyć przeglądrkę z interfejsem.
+* wprowadz kod autoryzacyjny. Znajduje się on w pliku `auth-key.txt`.
 # Opis działania:
 
 Bot autmatycznie przechodzi do listy kontaktów i na podstawie przekazanych mu danych wysyła wiadomości.
