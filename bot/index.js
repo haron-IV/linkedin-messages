@@ -29,7 +29,7 @@ const catchErrors = (browser) => {
 }
 
 const start = async (runConfig) => {
-  // try {
+  try {
     logger.info('Start bot.')
     const b = await Browser()
     await setBrowser(b)
@@ -39,10 +39,10 @@ const start = async (runConfig) => {
     await openLI(b.page)
     await login(b.page, runConfig)
     await runBot(b.browser, b.page, runConfig)
-  // } catch (err) {
-    // logger.error(err)
-    // addLog({type: 'error', message: 'Error bot will started again'})
-  // }
+  } catch (err) {
+    logger.error(err)
+    addLog({type: 'error', message: 'Error bot will started again'})
+  }
   
 }
 
