@@ -30,7 +30,7 @@ const login = async (page, runConfig) => {
 const checkLogin = async (page) => {
   const url = await page.url()
   if (url.includes('challenge')) {
-    const emails = await page.$$('input')
+    const emails = await page.$$('form input')
     const passwords = await page.$$('input[type=password]')
 
     logger.info(`email inputs: ${emails} | passwords inputs: ${passwords.length}`)
