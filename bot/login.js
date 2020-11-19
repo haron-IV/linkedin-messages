@@ -44,6 +44,7 @@ const checkLogin = async (page) => {
       // const el2 = await page.evaluate(tt2 => tt2.innerHTML, tt2)
       // logger.info(el2)
 
+      await page.waitFor(10000)
       logger.info('----------------')
 
       const b = await page.$('body')
