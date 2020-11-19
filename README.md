@@ -53,5 +53,5 @@ todo:
 - cd /logs && touch logs.log
 downoad ngrok
 download forever
-start api: forever --uid libot start node ./index.js
+start api: forever start -a --uid libot index.js
 start ngrok: ./ngrok http 9090 -log=stdout > li_bot_ngork.log &

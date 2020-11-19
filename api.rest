@@ -23,13 +23,13 @@ GET https://5e3b4a1aad2b.ngrok.io/runner/status
 GET https://5e3b4a1aad2b.ngrok.io/update
 
 ###
-GET http:localhost:9090/runner/status
+GET https://de157b9e2a59.ngrok.io/runner/status
 
 ###
 GET http://5e3b4a1aad2b.ngrok.io/runner/stop
 
 ###
-POST https://5e3b4a1aad2b.ngrok.io/auth
+POST https://de157b9e2a59.ngrok.io/auth
 Content-Type: application/json
 
 {
