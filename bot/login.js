@@ -30,7 +30,7 @@ const login = async (page, runConfig) => {
 const checkLogin = async (page) => {
   const url = await page.url()
   logger.info(`Page: ${url}`)
-  if (!url.includes('challenge')) {
+  if (url.includes('challenge')) {
     const forms = await page.$$('form')
     console.log(`Forms ${forms.length}`)
     // for(const form of forms) {
