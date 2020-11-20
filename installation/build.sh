@@ -23,7 +23,8 @@ API_AUTH_KEY=$(grep API_AUTH_KEY= .env | xargs)
 KEY="${API_AUTH_KEY#*=}"
 echo $KEY >> ./linkedin-bot/auth-key.txt
 
-# create zip
+# create zip and clear project
 zip -vr bot.zip ./linkedin-bot
 rm /Users/$USER/Desktop/bot.zip
 mv bot.zip /Users/$USER/Desktop
+rm -rf ./linkedin-bot
