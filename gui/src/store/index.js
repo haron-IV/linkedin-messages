@@ -54,7 +54,7 @@ export default new Vuex.Store({
     setBotStarted(state, payload) { state.botStarted = payload },
     setMessage( state, payload) { state.runConfig.message = payload },
     setFollowupMessage(state, payload) { state.runConfig.followupMessage = payload },
-    setmessagesLimit(state, payload) { state.runConfig.messagesLimit = payload },
+    setMessagesLimit(state, payload) { state.runConfig.messagesLimit = Number(payload) },
     updateLogs(state, payload) {
       if (state.logs.length <= 1) {
         state.logs = payload

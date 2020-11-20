@@ -34,18 +34,19 @@
 
       <div class="input-wrapper">
         <label for="message">Wiadomość</label>
-        <textarea name="" id="message" v-model="msg"></textarea>
+        <textarea name="msg" id="message" v-model="msg"></textarea>
       </div>
 
       <div class="input-wrapper">
         <label for="followup-message">Wiadomość follow up</label>
-        <textarea name="" id="followup-message" v-model="fmsg"></textarea>
+        <textarea name="fmsg" id="followup-message" v-model="fmsg"></textarea>
       </div>
 
       <div class="input-wrapper">
         <label for="message-count">Ile wiadomości wysłać?</label>
         <input type="number" id="message-count" v-model="msgL">
       </div>
+
     </section>
   </div>
 </template>
@@ -60,13 +61,13 @@ export default {
     })
     
     const fmsg = computed({
-      get: () => $store.state.runConfig.followupMessgae,
+      get: () => $store.state.runConfig.followupMessage,
       set: val => { $store.commit('setFollowupMessage', val) }
     })
 
     const msgL = computed({
       get: () => $store.state.runConfig.messagesLimit,
-      set: val => { $store.commit('setmessagesLimit', val) }
+      set: val => { $store.commit('setMessagesLimit', val) }
     })
 
     return {

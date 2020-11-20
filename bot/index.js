@@ -45,6 +45,9 @@ const start = async (runConfig) => {
     await runBot(b.browser, b.page, runConfig)
   } catch (err) {
     // TODO: close bot and restart it
+    
+    //close bot
+    // save bot state like message counter, and run config and start bot again
     logger.error(err)
     addLog({type: 'error', message: 'Error bot will started again'})
   }
