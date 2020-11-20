@@ -1,1 +1,0 @@
-npm install && npm install -g serve && mkdir logs && notepad ./logs/logs.log && Msg * "Bot zainstalowany. Mozesz zamknąć to okno i uruchomić bota kilając dwa razy na plik bot"

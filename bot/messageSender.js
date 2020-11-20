@@ -29,8 +29,10 @@ const openMessageWindow = async (page) => {
 }
 
 const sendMessage = async (page, message, user) => {
+  await page.waitFor(2000)
   await page.keyboard.type(message)
   if (message.length > 3) {
+    await page.waitFor(2000)
     await page.click(sendMessageBtn)
     logger.info(`Message send to: ${user.fullName}`)
     addLog({type: 'info', message: `Message send to: ${user.fullName}`})
