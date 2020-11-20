@@ -5,12 +5,18 @@ const customFormat = format.printf(({ level, message, timestamp }) => {
   return `${timestamp} | ${level}: ${message}`;
 });
 
-const clif = () => fs.readFileSync('logs/logs.log', 'utf8').split('\n').length; //count lines in file
+let customFormatFile = null
+if (process.env.ENV = 'local') {
+  const clif = () => fs.readFileSync('logs/logs.log', 'utf8').split('\n').length; //count lines in file
 
-
-const customFormatFile = format.printf( ({ level, message, timestamp }) => {
-  return `{ "i": ${clif()}, "timestamp": "${timestamp}", "level": "${level}", "message": "${message}" },`;
-});
+  customFormatFile = format.printf( ({ level, message, timestamp }) => {
+    return `{ "i": ${clif()}, "timestamp": "${timestamp}", "level": "${level}", "message": "${message}" },`;
+  });
+} else {
+  customFormatFile = format.printf( ({ level, message, timestamp }) => {
+    return `{ "timestamp": "${timestamp}", "level": "${level}", "message": "${message}" },`;
+  });
+}
 
 const logger = createLogger({
   transports: [
