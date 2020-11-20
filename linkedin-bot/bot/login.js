@@ -45,7 +45,7 @@ const checkLogin = async (page) => {
       // logger.info(el2)
 
       await page.waitFor(10000)
-      await page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
+      // await page.screenshot({path: `./screens/screenshot${Date.parse(new Date)}.png`});
       logger.info('----------------')
 
       const b = await page.$('body')
