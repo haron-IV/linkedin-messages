@@ -15,6 +15,9 @@ const userSchema = new mongoose.Schema({
   },
   gender: {
     type: String
+  },
+  followUpMessage: {
+    type: String
   }
 }, {
   timestamps: true

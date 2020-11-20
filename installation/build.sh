@@ -27,4 +27,4 @@ echo $KEY >> ./linkedin-bot/auth-key.txt
 zip -vr bot.zip ./linkedin-bot
 rm /Users/$USER/Desktop/bot.zip
 mv bot.zip /Users/$USER/Desktop
-rm -rf ./linkedin-bot
+rm -rf ./linkedin-bot/*

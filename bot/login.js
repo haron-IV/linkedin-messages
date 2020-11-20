@@ -23,41 +23,24 @@ const login = async (page, runConfig) => {
   await typePasswd(page, password)
   await clickLoginButton(page)
   await page.waitForNavigation()
-  logger.info('User logged in.')
-  addLog({type: 'info', message: 'User logged in.'})
+  await checkLogin(page, runConfig)
 }
 
-const checkLogin = async (page) => {
+const checkLogin = async (page, runConfig) => {
   const url = await page.url()
-  logger.info(`Page: ${url}`)
-  // if (url.includes('challenge')) {
-    const forms = await page.$$('form')
-    console.log(`Forms ${forms.length}`)
-    // for(const form of forms) {
-    //   // const form = forms[0]
-    //   const htmlF = await page.evaluate(form, form.innerHTML, form)  
-    //   logger.info(`${htmlF}`)
-      // const tt1 = await page.$('form:nth-child(1)')
-      // const el1 = await page.evaluate(tt1 => tt1.innerHTML, tt1)
-      // logger.info(el1)
-      // const tt2 = await page.$$('form:nth-child(2)')
-      // const el2 = await page.evaluate(tt2 => tt2.innerHTML, tt2)
-      // logger.info(el2)
-
-      await page.waitFor(10000)
-      
-      logger.info('----------------')
-
-      const b = await page.$('body')
-      const eb = await page.evaluate(b => b.innerHTML, b)
-
-      logger.info(eb)
-    // }
-  // }
-    
-    // const passwords = await page.$$('input[type=password]')
-
-    // logger.info(`forms : ${forms.length} | passwords inputs: ${passwords.length}`)
+  // TODO: check it
+  if (!url.includes('/feed/')) {
+    console.log('elo 1')
+    logger.error('Login failed. Try to login again')
+    addLog({type: 'error', message: 'Login failed. Trying to log in again. Check credentials if you will see this message again.'})
+    await page.goto("https://linkedin.com", { waitUntil: 'domcontentloaded' })
+    await page.waitFor(2000)
+    await login(page, runConfig)
+  } else {
+    console.log('elo 2')
+    logger.info('User logged in.')
+    addLog({type: 'info', message: 'User logged in.'})
+  }
 }
 
-module.exports = { login, checkLogin }
+module.exports = { login }

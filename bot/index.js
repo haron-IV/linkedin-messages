@@ -16,9 +16,21 @@ const Browser = async () => {
 }
 
 const openLI = async (page) => {
-  await page.goto('https://linkedin.com')
-  logger.info('Linkedin opened')
-  addLog({type: 'info', message: 'Linkedin opened.'})
+  await page.goto('https://linkedin.com', { waitUntil: 'domcontentloaded' })
+  await isLIopened(page)
+}
+
+const isLIopened = async (page) => {
+  const pageBody = await page.$('body')
+  const bodyContent = await page.evaluate(pageBody => pageBody.textContent, pageBody)
+  
+  if (bodyContent.split('HTTP ERROR').length > 1) {
+    logger.error('Open linkedin failed. Trying figure it out.')
+    await openLI(page)
+  } else {
+    logger.info('Linkedin opened')
+    addLog({type: 'info', message: 'Linkedin opened.'})
+  }
 }
 
 const start = async (runConfig) => {
@@ -32,6 +44,7 @@ const start = async (runConfig) => {
     await login(b.page, runConfig)
     await runBot(b.browser, b.page, runConfig)
   } catch (err) {
+    // TODO: close bot and restart it
     logger.error(err)
     addLog({type: 'error', message: 'Error bot will started again'})
   }

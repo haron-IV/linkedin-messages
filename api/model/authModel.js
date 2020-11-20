@@ -6,11 +6,9 @@ const authSchema = new mongoose.Schema({
   },
   key: {
     type: String
-  },
-  date: {
-    type: Date,
-    default: new Date()
   }
+}, {
+  timestamps: true
 })
 
 const Auth = mongoose.model('auth', authSchema)
