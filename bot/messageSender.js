@@ -15,12 +15,14 @@ const {
 const { count } = require('../api/model/logModel')
 
 const openProfile = async (page, profileLink) => {  
-  logger.info(`Profile openend -> ${profileLink}`)
   // ${base} sometimes links can be without orign
   await page.goto(`${profileLink}`, { waitUntil: 'domcontentloaded' })
+  logger.info(`Profile openend -> ${profileLink}`)
 }
 
 const openMessageWindow = async (page) => {
+  await page.waitFor(5000)
+  await page.waitForSelector(openMessageBtn)
   await page.click(openMessageBtn)
   await page.waitForSelector(messageWindow)
   logger.info('Message window opened')
