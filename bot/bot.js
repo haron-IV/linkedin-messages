@@ -38,7 +38,8 @@ const getMaxContactPages = async (page) => {
 }
 
 const runBot = async (browser, page, runConfig) => {
-  const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
+  const limit = 5 //demo limit
+  //runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
   const contactPagesLimit = await getMaxContactPages(page)
   while(counter <= limit && constactPageCounter < contactPagesLimit) { // if limit will reach or users list will end 
