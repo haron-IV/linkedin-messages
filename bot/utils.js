@@ -8,7 +8,8 @@ const cfg = {
   },
   waitTime: process.env.ENV === 'local' ? 5000 : (60 * 1000),
   waitTImeAfterMessage: process.env.ENV === 'local' ? 5000 : (3 * 60 * 1000),
-  constactPageCounter: 1
+  constactPageCounter: 1,
+  messageCounter: 0
 }
 
 const closeBrowser = async (browser) => { await browser.close() }

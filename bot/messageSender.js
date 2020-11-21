@@ -12,7 +12,7 @@ const {
     waitTImeAfterMessage
   } 
 } = require('./utils')
-const { count } = require('../api/model/logModel')
+const { increaseCounter, getCounter } = require('../api/service/counterService')
 
 const openProfile = async (page, profileLink) => {  
   // ${base} sometimes links can be without orign
@@ -44,21 +44,26 @@ const sendMessage = async (page, runConfig, user) => {
   }
 }
 
-const messageLoop = async (page, runConfig, counter, limit) => { 
+const messageLoop = async (page, runConfig, limit) => { 
   logger.info(`Message loop for: ${limit} messages`)
   
   const selectedUsers = await selectUserToSendMsg(page, runConfig) // select users from actual page
-  for (const user of selectedUsers) {  
-    if (!await getUserByProfileLink(user.profileHref) && counter <= limit) {
-      await openProfile(page, user.profileHref)
-      await openMessageWindow(page)
-      await sendMessage(page, runConfig.runConfig, user)
-      counter++;
-      await page.waitFor(waitTImeAfterMessage)
+  for (const user of selectedUsers) { 
+    console.log('run bot counter', await getCounter(), ' | ', limit);
+    if (!await getUserByProfileLink(user.profileHref)) {
+      if (await getCounter() <= limit) {
+        await openProfile(page, user.profileHref)
+        await openMessageWindow(page)
+        await sendMessage(page, runConfig.runConfig, user)
+        await increaseCounter()
+        await page.waitFor(waitTImeAfterMessage)
+      } else {
+        return
+      }
     } else {
       logger.info(`User ${user.fullName} already used`)
     }
   }
 }
 
-module.exports = { messageLoop }
+module.exports = { messageLoop, openProfile, openMessageWindow }

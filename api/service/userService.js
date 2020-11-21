@@ -18,7 +18,6 @@ const getUserByProfileLink = async (profileLink) => {
 }
 
 const getUsersToSendFollowup = async (date) => {
-  console.log(date);
   return await User.find({ followupMessageSendTime: new Date(date) })
 }
 

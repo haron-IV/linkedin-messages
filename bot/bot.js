@@ -1,11 +1,12 @@
 const { cfg: { url: { contacts } } } = require('./utils')
 let { cfg: { constactPageCounter } } = require('./utils')
 const  { stopBot } = require('./utils')
-const { maxContactPages } = require('./elements')
+const { maxContactPages, sendMessageBtn, messageCloseBtn } = require('./elements')
 const logger = require('../api/logger')
-const { messageLoop } = require('./messageSender')
+const { messageLoop, openProfile, openMessageWindow } = require('./messageSender')
 const { addLog } = require('../api/service/logService')
-let counter = 0
+const { getUsersToSendFollowup } = require('../api/service/userService')
+const { getCounter } = require('../api/service/counterService')
 
 const openContacts = async (page) => {
   await page.goto(contacts, { waitUntil: 'domcontentloaded' })
@@ -37,16 +38,51 @@ const getMaxContactPages = async (page) => {
   }
 }
 
+const getDateForFollowup = () => {
+  const date = new Date()
+  date.setHours(25, 0, 0, 0)
+
+  return date
+} 
+
+const sendFolloups = async (page) => {
+  console.log('------------------------------------------------------------------')
+  logger.info("Start sending follow up messages.")
+  console.log('------------------------------------------------------------------')
+  
+  const usersToSend = await getUsersToSendFollowup(getDateForFollowup())
+  console.log(usersToSend);
+
+  for (const user of usersToSend) {
+    if (user.followUpMessage.length > 3) {
+      await openProfile(page, user.profileLink)
+      await openMessageWindow(page)
+      await page.waitFor(2000)
+      await page.keyboard.type(user.followUpMessage)
+      await page.click(sendMessageBtn)
+      await page.waitFor(3000)
+      await page.click(messageCloseBtn)
+      
+      logger.info(`Follow up message send to: ${user.fullName}`)
+      addLog({type: 'info', message: `Follow up message send to: ${user.fullName}`})
+    }
+  }
+}
+
 const runBot = async (browser, page, runConfig) => {
-  const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
+  const limit = 2
+  //runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
   const contactPagesLimit = await getMaxContactPages(page)
-  while(counter <= limit && constactPageCounter < contactPagesLimit) { // if limit will reach or users list will end 
-    await messageLoop(page, runConfig, counter, limit)
-    await nextContactsPage(page, contactPagesLimit)
+  while(await getCounter() < limit) {
+    if (constactPageCounter <= contactPagesLimit) {
+      await messageLoop(page, runConfig, limit)
+      await nextContactsPage(page, contactPagesLimit)
+    }
   }
   
-  //TODO: followup
+  await sendFolloups(page)
+
   logger.info('Work done.')
   addLog({type: 'info', message: 'Job done.'})
   stopBot()

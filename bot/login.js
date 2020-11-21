@@ -30,14 +30,12 @@ const checkLogin = async (page, runConfig) => {
   const url = await page.url()
   // TODO: check it
   if (!url.includes('/feed/')) {
-    console.log('elo 1')
     logger.error('Login failed. Try to login again')
     addLog({type: 'error', message: 'Login failed. Trying to log in again. Check credentials if you will see this message again.'})
     await page.goto("https://linkedin.com", { waitUntil: 'domcontentloaded' })
     await page.waitFor(2000)
     await login(page, runConfig)
   } else {
-    console.log('elo 2')
     logger.info('User logged in.')
     addLog({type: 'info', message: 'User logged in.'})
   }

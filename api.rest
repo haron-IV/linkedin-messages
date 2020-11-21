@@ -43,3 +43,20 @@ GET http://localhost:9090/user/followup-today
 
 ###
 GET http://localhost:9090/logs/all
+
+###
+GET http://localhost:9090/counter
+
+###
+POST http://localhost:9090/counter/set
+Content-Type: application/json
+
+{
+  "name": "users"
+}
+
+###
+POST http://localhost:9090/counter/increase
+Content-Type: application/json
+
+{}
