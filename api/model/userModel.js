@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
   },
   followUpMessage: {
     type: String
+  },
+  followupMessageSendTime: {
+    type: Date
   }
 }, {
   timestamps: true

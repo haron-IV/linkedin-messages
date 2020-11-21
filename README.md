@@ -29,7 +29,7 @@ todo:
 
 * Interface
   * add auth to api page ✅
-    - save api auth key as cookie and check it everytime on open 
+    - save api auth key as cookie and check it everytime on open ✅
   * add login page ✅
     - username, login to linked in ✅
   * add bot interface
@@ -38,12 +38,18 @@ todo:
     - start / stop bot✅
     - connect request stop bot to button ✅
     - bot status ✅
-  * add netlify automatic build
-  * add detector for local and web env
+  * add netlify automatic build ✅
+  * add detector for local and web env ✅
 
 
 * server:
  - add ngrok ✅
+
+* followup messaging
+  - save message pairs
+  - affter whole messaging do followups
+    - start from selecting today then get all users to send followup mesage, then run messaging
+  - on sending base message check followup days difference and create date for send followup message. Assign it to user schema.
 
 ## guide:
 - git clone

@@ -43,6 +43,11 @@
       </div>
 
       <div class="input-wrapper">
+        <label for="followup-message-time">Kiedy wysłać follow up?</label>
+        <input name="fmsgT" type="date" id="followup-message-time" style="" v-model="fmsgT" />
+      </div>
+
+      <div class="input-wrapper">
         <label for="message-count">Ile wiadomości wysłać?</label>
         <input type="number" id="message-count" v-model="msgL">
       </div>
@@ -64,6 +69,11 @@ export default {
       get: () => $store.state.runConfig.followupMessage,
       set: val => { $store.commit('setFollowupMessage', val) }
     })
+    
+    const fmsgT = computed({
+      get: () => $store.state.runConfig.followupMessageSendTime,
+      set: val => $store.commit('setFollowupMessageTime', val)
+    })
 
     const msgL = computed({
       get: () => $store.state.runConfig.messagesLimit,
@@ -71,7 +81,7 @@ export default {
     })
 
     return {
-      msg, fmsg, msgL
+      msg, fmsg, msgL, fmsgT
     }
   }
 }

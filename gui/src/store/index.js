@@ -36,6 +36,7 @@ export default new Vuex.Store({
       ],
       message: "",
       followupMessage: "",
+      followupMessageSendTime: 0,
       messagesLimit: 0
     }
   },
@@ -54,6 +55,7 @@ export default new Vuex.Store({
     setBotStarted(state, payload) { state.botStarted = payload },
     setMessage( state, payload) { state.runConfig.message = payload },
     setFollowupMessage(state, payload) { state.runConfig.followupMessage = payload },
+    setFollowupMessageTime(state, payload) { state.runConfig.followupMessageSendTime = payload },
     setMessagesLimit(state, payload) { state.runConfig.messagesLimit = Number(payload) },
     updateLogs(state, payload) {
       if (state.logs.length <= 1) {

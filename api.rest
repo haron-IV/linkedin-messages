@@ -6,28 +6,6 @@ Content-Type: application/json
   "type": "user"
 }
 
-### 
-
-GET https://api.genderize.io/?name=teodor
-
-### 
-GET  https://5e3b4a1aad2b.ngrok.io/logs
-
-### 
-GET https://5e3b4a1aad2b.ngrok.io/runner/stop
-
-###
-GET https://5e3b4a1aad2b.ngrok.io/runner/status
-
-###
-GET https://5e3b4a1aad2b.ngrok.io/update
-
-###
-GET https://de157b9e2a59.ngrok.io/runner/status
-
-###
-GET http://5e3b4a1aad2b.ngrok.io/runner/stop
-
 ###
 POST https://de157b9e2a59.ngrok.io/auth
 Content-Type: application/json
@@ -50,3 +28,12 @@ Content-Type: application/json
 ###
 
 POST http://localhost:9090/runner/start
+
+###
+
+GET http://localhost:9090/user/followup
+Content-Type: application/json
+
+{
+  "date": "2020-11-22"
+}
