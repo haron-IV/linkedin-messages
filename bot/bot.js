@@ -71,7 +71,7 @@ const sendFolloups = async (page) => {
 }
 
 const runBot = async (browser, page, runConfig) => {
-  const limit = 2
+  const limit = 4
   //runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
   await openContacts(page)
   const contactPagesLimit = await getMaxContactPages(page)

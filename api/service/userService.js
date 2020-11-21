@@ -22,7 +22,7 @@ const getUsersToSendFollowup = async (date) => {
 }
 
 const markFollowmessageAsSend = async (id) => {
-  await User.updateOne({ id }, { followupWasSend: true })
+  await User.updateOne({ _id: id }, { followupWasSend: true })
 }
 
 module.exports = { saveUserInfo, getUserByProfileLink, getUsersToSendFollowup, markFollowmessageAsSend }

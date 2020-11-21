@@ -35,11 +35,19 @@ GET http://localhost:9090/user/followup
 Content-Type: application/json
 
 {
-  "date": "2020-11-21"
+  "date": "2020-11-22"
 }
 
 ### 
 GET http://localhost:9090/user/followup-today
+
+###
+POST http://localhost:9090/user/followup-sent
+Content-Type: application/json
+
+{
+  "id": "5fb8fb834cabd682876844af"
+}
 
 ###
 GET http://localhost:9090/logs/all
