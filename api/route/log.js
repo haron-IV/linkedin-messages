@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getLogs } = require('../service/logService')
+const { getLogs, getAllLogs } = require('../service/logService')
 // const readFile = require('read-last-lines')
 
 router.get('/', async (req, res) => {
@@ -9,6 +9,11 @@ router.get('/', async (req, res) => {
   // readFile.read('logs/logs.log', 15).then(text => {
   //   res.status(200).json({ text })
   // })
+})
+
+router.get('/all', async (req, res) => {
+  
+  res.status(200).json(await getAllLogs())
 })
 
 module.exports = router

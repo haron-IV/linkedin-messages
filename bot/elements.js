@@ -6,6 +6,7 @@ const el = {
   openMessageBtn: '.body main div section div a',
   messageWindow: 'aside div + div[tabindex="-1"]',
   messageTextInput: 'div form div div div p',
+  messageCloseBtn: 'aside div ~ div header section button ~ div ~ button',
   sendMessageBtn: 'footer div div button[type=submit]',
   maxContactPages: 'div div div button + ul li:last-child button span'
 }

@@ -1,6 +1,6 @@
 const logger = require('../api/logger')
 const selectUserToSendMsg = require('./userTargetSelector')
-const { messageWindow, openMessageBtn, sendMessageBtn } = require('./elements')
+const { messageWindow, openMessageBtn, sendMessageBtn, messageCloseBtn } = require('./elements')
 const { saveUserInfo, getUserByProfileLink } = require('../api/service/userService')
 const { addLog } = require('../api/service/logService')
 const { 
@@ -34,7 +34,8 @@ const sendMessage = async (page, runConfig, user) => {
   if (runConfig.message.length > 3) {
     await page.waitFor(2000)
     await page.click(sendMessageBtn)
-    // TODO: close message window
+    await page.waitFor(3000)
+    await page.click(messageCloseBtn)
     logger.info(`Message send to: ${user.fullName}`)
     addLog({type: 'info', message: `Message send to: ${user.fullName}`})
     saveUserInfo({ ...user, followUpMessage: runConfig.followupMessage, followupMessageSendTime: new Date(runConfig.followupMessageSendTime) })

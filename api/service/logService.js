@@ -12,5 +12,6 @@ const addLog = async (logInfo) => {
 }
 
 const getLogs = async () => Log.find({}).sort({_id: -1}).limit(5)
+const getAllLogs = async () => await Log.find({}).sort({_id: -1})
 
-module.exports = { addLog, getLogs }
+module.exports = { addLog, getLogs, getAllLogs }
