@@ -26,7 +26,6 @@ export default {
         type: "user"
       })
       .then(res => {
-        console.log(res);
         if (res.status === 200) {
           const date = new Date()
           date.setTime(date.getTime() + (3*24*60*60*1000)) //set cookie for 3 days

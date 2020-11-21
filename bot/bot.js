@@ -46,12 +46,8 @@ const getDateForFollowup = () => {
 } 
 
 const sendFolloups = async (page) => {
-  console.log('------------------------------------------------------------------')
-  logger.info("Start sending follow up messages.")
-  console.log('------------------------------------------------------------------')
-  
   const usersToSend = await getUsersToSendFollowup(getDateForFollowup())
-  console.log(usersToSend);
+  logger.info(`${usersToSend.length} followup messages to send`)
 
   for (const user of usersToSend) {
     if (user.followUpMessage.length > 3 && user.followupWasSend) {

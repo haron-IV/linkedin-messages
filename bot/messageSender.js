@@ -49,7 +49,6 @@ const messageLoop = async (page, runConfig, limit) => {
   
   const selectedUsers = await selectUserToSendMsg(page, runConfig) // select users from actual page
   for (const user of selectedUsers) { 
-    console.log('run bot counter', await getCounter(), ' | ', limit);
     if (!await getUserByProfileLink(user.profileHref)) {
       if (await getCounter() <= limit) {
         await openProfile(page, user.profileHref)

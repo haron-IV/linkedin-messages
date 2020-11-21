@@ -79,7 +79,6 @@ const selectUsersToSendMsg = async (page, runConfig) => {
   if (regionsNames.length > 0) {
     users = users.filter(user => {
       const loc = getLocalozatonObj(user.localization).voivodeship
-      console.log("loc", loc, 'should', getLocalozatonObj(user.localization));
       if(regionsNames.includes(loc)) return user
       return null
     })
