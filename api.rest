@@ -35,5 +35,8 @@ GET http://localhost:9090/user/followup
 Content-Type: application/json
 
 {
-  "date": "2020-11-22"
+  "date": "2020-11-21"
 }
+
+### 
+GET http://localhost:9090/user/followup-today

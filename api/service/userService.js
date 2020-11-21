@@ -14,12 +14,11 @@ const saveUserInfo = async (userData) => {
 }
 
 const getUserByProfileLink = async (profileLink) => {
-  return await User.findOne({profileLink: profileLink})
+  return await User.findOne({ profileLink: profileLink })
 }
 
 const getUsersToSendFollowup = async (date) => {
-  
-  
+  console.log(date);
   return await User.find({ followupMessageSendTime: new Date(date) })
 }
 

@@ -34,6 +34,7 @@ const sendMessage = async (page, runConfig, user) => {
   if (runConfig.message.length > 3) {
     await page.waitFor(2000)
     await page.click(sendMessageBtn)
+    // TODO: close message window
     logger.info(`Message send to: ${user.fullName}`)
     addLog({type: 'info', message: `Message send to: ${user.fullName}`})
     saveUserInfo({ ...user, followUpMessage: runConfig.followupMessage, followupMessageSendTime: new Date(runConfig.followupMessageSendTime) })
