@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
   },
   followupMessageSendTime: {
     type: Date
-  }
+  },
+  followupWasSend: Boolean
 }, {
   timestamps: true
 })

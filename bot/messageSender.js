@@ -35,13 +35,13 @@ const sendMessage = async (page, runConfig, user) => {
     await page.waitFor(2000)
     await page.click(sendMessageBtn)
     await page.waitFor(3000)
-    await page.click(messageCloseBtn)
     logger.info(`Message send to: ${user.fullName}`)
     addLog({type: 'info', message: `Message send to: ${user.fullName}`})
     saveUserInfo({ ...user, followUpMessage: runConfig.followupMessage, followupMessageSendTime: new Date(runConfig.followupMessageSendTime) })
   } else {
     logger.info(`Message to short to send.`)
   }
+  await page.click(messageCloseBtn)
 }
 
 const messageLoop = async (page, runConfig, limit) => { 

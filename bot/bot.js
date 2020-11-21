@@ -5,7 +5,7 @@ const { maxContactPages, sendMessageBtn, messageCloseBtn } = require('./elements
 const logger = require('../api/logger')
 const { messageLoop, openProfile, openMessageWindow } = require('./messageSender')
 const { addLog } = require('../api/service/logService')
-const { getUsersToSendFollowup } = require('../api/service/userService')
+const { getUsersToSendFollowup, markFollowmessageAsSend } = require('../api/service/userService')
 const { getCounter } = require('../api/service/counterService')
 
 const openContacts = async (page) => {
@@ -54,12 +54,13 @@ const sendFolloups = async (page) => {
   console.log(usersToSend);
 
   for (const user of usersToSend) {
-    if (user.followUpMessage.length > 3) {
+    if (user.followUpMessage.length > 3 && user.followupWasSend) {
       await openProfile(page, user.profileLink)
       await openMessageWindow(page)
       await page.waitFor(2000)
       await page.keyboard.type(user.followUpMessage)
       await page.click(sendMessageBtn)
+      await markFollowmessageAsSend(user._id)
       await page.waitFor(3000)
       await page.click(messageCloseBtn)
       
