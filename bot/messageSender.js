@@ -37,7 +37,7 @@ const sendMessage = async (page, runConfig, user) => {
     await page.waitFor(3000)
     logger.info(`Message send to: ${user.fullName}`)
     addLog({type: 'info', message: `Message send to: ${user.fullName}`})
-    saveUserInfo({ ...user, followUpMessage: runConfig.followupMessage, followupMessageSendTime: new Date(runConfig.followupMessageSendTime) })
+    saveUserInfo({ ...user, followUpMessage: runConfig.followupMessage, followupMessageSendTime: new Date(runConfig.followupMessageSendTime), followupWasSend: false })
   } else {
     logger.info(`Message to short to send.`)
   }
@@ -51,6 +51,7 @@ const messageLoop = async (page, runConfig, limit) => {
   for (const user of selectedUsers) { 
     if (!await getUserByProfileLink(user.profileHref)) {
       if (await getCounter() <= limit) {
+        console.log('msg counter: ', await getCounter(), limit);
         await openProfile(page, user.profileHref)
         await openMessageWindow(page)
         await sendMessage(page, runConfig.runConfig, user)

@@ -40,7 +40,7 @@ const getMaxContactPages = async (page) => {
 
 const getDateForFollowup = () => {
   const date = new Date()
-  date.setHours(25, 0, 0, 0)
+  date.setHours(0, 0, 0, 0)
 
   return date
 } 
@@ -48,6 +48,7 @@ const getDateForFollowup = () => {
 const sendFolloups = async (page) => {
   const usersToSend = await getUsersToSendFollowup(getDateForFollowup())
   logger.info(`${usersToSend.length} followup messages to send`)
+  addLog({type: 'info', message: `Follow up messages to send: ${usersToSend.length}`})
 
   for (const user of usersToSend) {
     if (user.followUpMessage.length > 3 && user.followupWasSend) {
@@ -67,7 +68,7 @@ const sendFolloups = async (page) => {
 }
 
 const runBot = async (browser, page, runConfig) => {
-  const limit = runConfig.messagesLimit > 0 ? runConfig.messagesLimit : 999
+  const limit = runConfig.runConfig.messagesLimit > 0 ? runConfig.runConfig.messagesLimit : 999
   
   await openContacts(page)
   const contactPagesLimit = await getMaxContactPages(page)

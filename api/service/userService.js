@@ -18,7 +18,10 @@ const getUserByProfileLink = async (profileLink) => {
 }
 
 const getUsersToSendFollowup = async (date) => {
-  return await User.find({ followupMessageSendTime: new Date(date) })
+  const users = await User.find({ followupWasSend: false, followupMessageSendTime: { $gte: new Date(2019, 1, 1), $lt: new Date(date) } })
+  
+  return users
+  // return await User.find({ followupMessageSendTime: new Date(date) })
 }
 
 const markFollowmessageAsSend = async (id) => {
