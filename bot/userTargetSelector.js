@@ -60,11 +60,15 @@ const getUsersFromPage = async (page) => {
 
 const getLocalozatonObj = (localization) => {
   const loc = localization?.split(/[,.]/)
-
-  return {
+  if (loc.length > 2 && loc.length < 4) return {
     country: loc[3].trim(),
     city: loc[0].trim(),
     voivodeship: loc[2].trim()
+  }
+  else return { //nulls here cuz sometimes localization includes other template. Full localization assigned to voivodeship cuz bot looking for voivodeship when filtering users
+    country: null,
+    city: null,
+    voivodeship: localization
   }
 }
 
@@ -75,13 +79,16 @@ const selectUsersToSendMsg = async (page, runConfig) => {
   logger.info(`Users before filtering ${users.length}`)
   if (gender && gender !== 'all') {
     users = users.filter(user => user.gender === gender)
+    logger.info(`Users after gender filtering: ${users.length}`)
   }
   if (regionsNames.length > 0) {
     users = users.filter(user => {
       const loc = getLocalozatonObj(user.localization).voivodeship
+      console.log(user, regionsNames);
       if(regionsNames.includes(loc)) return user
       return null
     })
+    logger.info(`Users after region filtering: ${users.length}`)
   }
   logger.info(`Users selected from page ${users.length}`)
   addLog({type: 'info', message: `Users selected from page ${users.length}`})
