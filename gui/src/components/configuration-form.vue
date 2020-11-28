@@ -117,5 +117,9 @@ select {
 textarea {
   min-width: 250px;
   min-height: 100px;
+  padding: 5px;
+}
+input {
+  padding: 5px;
 }
 </style>
