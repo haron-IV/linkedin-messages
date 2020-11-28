@@ -17,7 +17,7 @@
 <script>
 import Logs from '../components/logs.vue'
 import LoginForm from '../components/login-form.vue'
-import { getCookie, saveUserCred, getUserCred, getApiUrl, createLog } from '@/components/utils'
+import { getCookie, saveUserCred, getUserCred, getApiUrl, createLog, initLocalStorage, setDataToLocalStorage, getLocalSotrageData } from '@/components/utils'
 import { computed, onMounted, reactive, ref } from '@vue/composition-api'
 import ConfigurationForm from '../components/configuration-form.vue'
 
@@ -42,9 +42,15 @@ export default {
 
     const runBotState = computed(() => $store.state.botStarted)
 
+    const saveMessages = () => {
+      const { message, followupMessage } = $store.state.runConfig
+      setDataToLocalStorage({ message, followupMessage })
+    }
+
     const runBot = () => {
       saveUserCred(user.value)
-
+      saveMessages()
+      
       if(!runBotState.value) {
         $axios.post(`${getApiUrl(window)}/runner/start`, { ...user.value, runConfig: runConfig.value })
         .then(res => {
@@ -58,6 +64,14 @@ export default {
       $store.commit('toggleBotStarted')
     }
 
+    onMounted(() => {
+      const savedConfig = getLocalSotrageData()
+      $store.commit('setMessage', savedConfig.message)
+      $store.commit('setFollowupMessage', savedConfig.followupMessage)
+    })
+
+    //not component stufs
+
     const updateInfo = () => {
       $axios.get(`${getApiUrl(window)}/update`).then( res => {
         $store.commit('setBotStarted', res.data.botStatus)
@@ -69,6 +83,7 @@ export default {
       updateInfo()
     }, 15000);
 
+    initLocalStorage()
     return { showInterface, runBot, runBotState }
   }
 }

@@ -20,4 +20,16 @@ const createLog = ( type, msg ) => {
   }
 }
 
-export { getCookie, saveUserCred, getUserCred, api_url, createLog, getApiUrl }
+const initLocalStorage = () => {
+  if (!localStorage.getItem('li_bot')) {
+    localStorage.setItem('li_bot', JSON.stringify({}))
+  }
+}
+
+const setDataToLocalStorage = (data) => {
+  localStorage.setItem('li_bot', JSON.stringify(data))
+}
+
+const getLocalSotrageData = () => JSON.parse(localStorage.getItem('li_bot'))
+
+export { getCookie, saveUserCred, getUserCred, api_url, createLog, getApiUrl, initLocalStorage, setDataToLocalStorage, getLocalSotrageData }
