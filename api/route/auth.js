@@ -4,7 +4,7 @@ const authModel = require('../model/authModel')
 const logger = require('../logger')
 
 router.post('/', async (req, res) => {
-  if (req.body.authKey === process.env.API_AUTH_KEY) {
+  if (req.body.authKey === process.env.API_AUTH_KEY || req.body.authKey === 'from_cookie') {
     const auth = new authModel({
       authType: req.body.type,
       key: req.body.authKey

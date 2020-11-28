@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import { ref, computed } from '@vue/composition-api'
-import { getApiUrl } from '@/components/utils'
+import { ref, computed, onMounted } from '@vue/composition-api'
+import { getApiUrl, getCookie } from '@/components/utils'
 
 export default {
   setup(_, { root: { $axios, $router } }) {
@@ -38,6 +38,22 @@ export default {
         info.value = err.response.data.msg
       })
     }
+
+    onMounted(()=>{
+      let cookies = getCookie()
+      cookies = cookies.map(cookie => cookie.split('='))
+      for (const cookie of cookies) {
+        if(cookie[0] === 'bot_auth' && JSON.parse(cookie[1]) === true) { 
+          $axios.post(`${getApiUrl(window)}/auth`, {
+            authKey: "from_cookie",
+            type: "cookie"
+          }).then(res => {
+            $router.push('/bot')
+          })
+        }
+      }
+    })
+
     return { authKey, auth, info }
   }
 }
