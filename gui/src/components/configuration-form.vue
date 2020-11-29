@@ -18,13 +18,13 @@
       <div class="input-wrapper">
         <label for="gender">Wybierz region:</label>
         <div class="regions">
-          <ul class="list">
+          <ul class="list" :class="{'block-selecting': isRegionSelected}">
             <li class="list-item" :class="{'list-item--selected': region.selected}" v-for="region in $store.state.runConfig.regions" :key="region.name" @click="$store.commit('toggleRegion', region.name)">
               {{region.name}}
             </li>
           </ul>
 
-          <div class="selected-regions">
+          <div :class="{'selected-regions': isRegionSelected}">
             <span v-for="region in $store.state.runConfig.regions.filter(el => el.selected === true)" :key="region.name">
               {{region.name}},
             </span>
@@ -80,8 +80,14 @@ export default {
       set: val => { $store.commit('setMessagesLimit', val) }
     })
 
+    const isRegionSelected = computed(()=> {
+      const selectedRegions = $store.state.runConfig.regions.map(region => region.selected)
+      if( selectedRegions.filter(region => region === true).length > 0 ) return true
+      else false
+    })
+
     return {
-      msg, fmsg, msgL, fmsgT
+      msg, fmsg, msgL, fmsgT, isRegionSelected
     }
   }
 }
@@ -96,7 +102,6 @@ select {
   list-style-type: none;
   height: 30px;
   overflow: hidden;
-  
 }
 .list:hover {
   height: 200px;
@@ -124,5 +129,15 @@ textarea {
 }
 input {
   padding: 5px;
+}
+.selected-regions {
+  border: solid green;
+  border-width: 0 0 2px 0;
+}
+.block-selecting {
+  border: 2px solid green;
+  pointer-events: none;
+  opacity: 0;
+  position: absolute;
 }
 </style>
