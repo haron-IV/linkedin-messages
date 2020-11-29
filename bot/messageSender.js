@@ -45,7 +45,7 @@ const sendMessage = async (page, runConfig, user) => {
   await page.click(messageCloseBtn)
 }
 
-const messageLoop = async (page, runConfig, limit) => {
+const filterUsedUsers = async (page, runConfig) => {
   let selectedUsers = await selectUserToSendMsg(page, runConfig) // select users from actual page
   const userProfileLinks = selectedUsers.map(user => user.profileHref)
   
@@ -55,25 +55,29 @@ const messageLoop = async (page, runConfig, limit) => {
     usedUsers = [usedUsers]
   }
   const usedUsersLinks =  [... new Set(usedUsers.map(user => user.profileLink))]
-
+  
   userProfileLinks.filter( userLink => {
     let duplicate = usedUsersLinks.filter(link => link === userLink)
     if (Array.isArray(duplicate)) duplicate = duplicate[0]
     selectedUsers = selectedUsers.filter( selectedUser => selectedUser.profileHref != duplicate)
   })
-
   logger.info(`Selected user to send message: ${selectedUsers.length}`)
 
-  for (const user of selectedUsers) {
-      if (await getCounter() <= limit) {
-        await openProfile(page, user.profileHref)
-        await openMessageWindow(page)
-        await sendMessage(page, runConfig.runConfig, user)
-        await increaseCounter()
-        await page.waitFor(waitTImeAfterMessage)
-      } else {
-        return
-      }
+  return selectedUsers
+}
+
+const messageLoop = async (page, runConfig, limit) => {
+  for (const user of await filterUsedUsers(page, runConfig)) {
+    if (await getCounter() <= limit) {
+      await openProfile(page, user.profileHref)
+      await openMessageWindow(page)
+      await sendMessage(page, runConfig.runConfig, user)
+      await increaseCounter()
+      await page.waitFor(waitTImeAfterMessage)
+    } else {
+      logger.info('Message limit reached.')
+      return
+    }
   }
 }
 
