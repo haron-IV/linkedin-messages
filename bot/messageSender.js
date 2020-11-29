@@ -1,8 +1,9 @@
 const logger = require('../api/logger')
 const selectUserToSendMsg = require('./userTargetSelector')
 const { messageWindow, openMessageBtn, sendMessageBtn, messageCloseBtn } = require('./elements')
-const { saveUserInfo, getUserByProfileLink } = require('../api/service/userService')
+const { saveUserInfo, getUserByProfileLink, getUsersByProfileLinks } = require('../api/service/userService')
 const { addLog } = require('../api/service/logService')
+const uniqBy = require('lodash.uniqby')
 const { 
   cfg: { 
     url: { 
@@ -44,14 +45,27 @@ const sendMessage = async (page, runConfig, user) => {
   await page.click(messageCloseBtn)
 }
 
-const messageLoop = async (page, runConfig, limit) => { 
-  logger.info(`Message loop for: ${limit} messages`)
+const messageLoop = async (page, runConfig, limit) => {
+  let selectedUsers = await selectUserToSendMsg(page, runConfig) // select users from actual page
+  const userProfileLinks = selectedUsers.map(user => user.profileHref)
   
-  const selectedUsers = await selectUserToSendMsg(page, runConfig) // select users from actual page
-  for (const user of selectedUsers) { 
-    if (!await getUserByProfileLink(user.profileHref)) {
+  let usedUsers = await getUsersByProfileLinks(userProfileLinks) // all used already users
+  
+  if (usedUsers && !Array.isArray(usedUsers) ) {
+    usedUsers = [usedUsers]
+  }
+  const usedUsersLinks =  [... new Set(usedUsers.map(user => user.profileLink))]
+
+  userProfileLinks.filter( userLink => {
+    let duplicate = usedUsersLinks.filter(link => link === userLink)
+    if (Array.isArray(duplicate)) duplicate = duplicate[0]
+    selectedUsers = selectedUsers.filter( selectedUser => selectedUser.profileHref != duplicate)
+  })
+
+  logger.info(`Selected user to send message: ${selectedUsers.length}`)
+
+  for (const user of selectedUsers) {
       if (await getCounter() <= limit) {
-        console.log('msg counter: ', await getCounter(), limit);
         await openProfile(page, user.profileHref)
         await openMessageWindow(page)
         await sendMessage(page, runConfig.runConfig, user)
@@ -60,9 +74,6 @@ const messageLoop = async (page, runConfig, limit) => {
       } else {
         return
       }
-    } else {
-      logger.info(`User ${user.fullName} already used`)
-    }
   }
 }
 

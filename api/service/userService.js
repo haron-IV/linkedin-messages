@@ -17,6 +17,11 @@ const getUserByProfileLink = async (profileLink) => {
   return await User.findOne({ profileLink: profileLink })
 }
 
+const getUsersByProfileLinks = async (profileLinks) => {
+  const users = await User.find({ profileLink: { $in: profileLinks } })
+  return users
+}
+
 const getUsersToSendFollowup = async (date) => {
   const users = await User.find({ followupWasSend: false, followupMessageSendTime: { $gte: new Date(2019, 1, 1), $lt: new Date(date) } })
   
@@ -28,4 +33,4 @@ const markFollowmessageAsSend = async (id) => {
   await User.updateOne({ _id: id }, { followupWasSend: true })
 }
 
-module.exports = { saveUserInfo, getUserByProfileLink, getUsersToSendFollowup, markFollowmessageAsSend }
+module.exports = { saveUserInfo, getUserByProfileLink, getUsersToSendFollowup, markFollowmessageAsSend, getUsersByProfileLinks }

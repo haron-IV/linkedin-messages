@@ -29,7 +29,6 @@ const isLIopened = async (page) => {
     await openLI(page)
   } else {
     logger.info('Linkedin opened')
-    addLog({type: 'info', message: 'Linkedin opened.'})
   }
 }
 

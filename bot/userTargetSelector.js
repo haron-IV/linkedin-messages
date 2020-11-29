@@ -91,7 +91,6 @@ const selectUsersToSendMsg = async (page, runConfig) => {
     logger.info(`Users after region filtering: ${users.length}`)
   }
   logger.info(`Users selected from page ${users.length}`)
-  addLog({type: 'info', message: `Users selected from page ${users.length}`})
   
   return users
 }
