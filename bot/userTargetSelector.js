@@ -81,6 +81,7 @@ const selectUsersToSendMsg = async (page, runConfig) => {
     users = users.filter(user => user.gender === gender)
     logger.info(`Users after gender filtering: ${users.length}`)
   }
+  //TODO: remove this filter and add native LI filtering
   if (regionsNames.length > 0) {
     users = users.filter(user => {
       const loc = getLocalozatonObj(user.localization).voivodeship
