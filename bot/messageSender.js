@@ -3,7 +3,6 @@ const selectUserToSendMsg = require('./userTargetSelector')
 const { messageWindow, openMessageBtn, sendMessageBtn, messageCloseBtn } = require('./elements')
 const { saveUserInfo, getUserByProfileLink, getUsersByProfileLinks } = require('../api/service/userService')
 const { addLog } = require('../api/service/logService')
-const uniqBy = require('lodash.uniqby')
 const { 
   cfg: { 
     url: { 

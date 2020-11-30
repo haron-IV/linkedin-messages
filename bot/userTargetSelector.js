@@ -1,7 +1,7 @@
 const axios = require('axios')
 const deburr = require('lodash.deburr')
 const logger = require('../api/logger')
-const {cfg: { waitTime }, extractNameFromFullName } = require('./utils')
+const {cfg: { waitTime, url: { regionSearch } }, extractNameFromFullName, AllRegions, setContactsWithRegion } = require('./utils')
 const { addLog } = require('../api/service/logService')
 
 const scrollToBottomOfThePage = async (page) => {
@@ -51,7 +51,19 @@ const mapUsers = async (page) => {
   return selectedUsers
 }
 
-const getUsersFromPage = async (page) => {
+const filterByRegion = async (page, runConfig) => {
+  const {runConfig: { regions }} = runConfig
+  const region = AllRegions.filter(region => region.name === regions[0].name)[0]
+
+  if (regions[0].name) {
+    const regionLink = `${regionSearch[0]}${region.key}${regionSearch[1]}`
+    setContactsWithRegion(regionLink)
+    await page.goto(regionLink)
+  }
+}
+
+const getUsersFromPage = async (page, runConfig) => {
+  await filterByRegion(page, runConfig)
   await scrollToBottomOfThePage(page)
   const users = await mapUsers(page)
   logger.info('Users mapped')
@@ -73,25 +85,16 @@ const getLocalozatonObj = (localization) => {
 }
 
 const selectUsersToSendMsg = async (page, runConfig) => {
-  const {runConfig: { gender, regions }} = runConfig
-  const regionsNames = regions.map(el => el.name)
-  let users = await getUsersFromPage(page)
+  const {runConfig: { gender }} = runConfig
+  let users = await getUsersFromPage(page, runConfig)
   logger.info(`Users before filtering ${users.length}`)
+
   if (gender && gender !== 'all') {
     users = users.filter(user => user.gender === gender)
     logger.info(`Users after gender filtering: ${users.length}`)
+  } else {
+    logger.info(`Users selected from page ${users.length}`)
   }
-  //TODO: remove this filter and add native LI filtering
-  if (regionsNames.length > 0) {
-    users = users.filter(user => {
-      const loc = getLocalozatonObj(user.localization).voivodeship
-      console.log(user, regionsNames);
-      if(regionsNames.includes(loc)) return user
-      return null
-    })
-    logger.info(`Users after region filtering: ${users.length}`)
-  }
-  logger.info(`Users selected from page ${users.length}`)
   
   return users
 }

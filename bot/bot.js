@@ -1,5 +1,5 @@
 const { cfg: { url: { contacts } } } = require('./utils')
-let { cfg: { constactPageCounter } } = require('./utils')
+let { cfg: { constactPageCounter }, getContactsWithRegion } = require('./utils')
 const  { stopBot } = require('./utils')
 const { maxContactPages, sendMessageBtn, messageCloseBtn } = require('./elements')
 const logger = require('../api/logger')
@@ -15,7 +15,8 @@ const openContacts = async (page) => {
 
 const nextContactsPage = async (page, limit) => {
   constactPageCounter++
-  await page.goto(`${contacts}&page=${constactPageCounter}`, { waitUntil: 'domcontentloaded' })
+  const pageLink = getContactsWithRegion()
+  await page.goto(`${pageLink}&page=${constactPageCounter}`, { waitUntil: 'domcontentloaded' })
   logger.info(`Opened ${constactPageCounter}/${limit} contact page`)
 }
 
