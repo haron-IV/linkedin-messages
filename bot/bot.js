@@ -1,5 +1,5 @@
 const { cfg: { url: { contacts } } } = require('./utils')
-let { cfg: { constactPageCounter }, getContactsWithRegion } = require('./utils')
+let { cfg: { constactPageCounter, url: { regionSearch } }, getContactsWithRegion, setContactsWithRegion, AllRegions } = require('./utils')
 const  { stopBot } = require('./utils')
 const { maxContactPages, sendMessageBtn, messageCloseBtn } = require('./elements')
 const logger = require('../api/logger')
@@ -16,7 +16,12 @@ const openContacts = async (page) => {
 const nextContactsPage = async (page, limit) => {
   constactPageCounter++
   const pageLink = getContactsWithRegion()
-  await page.goto(`${pageLink}&page=${constactPageCounter}`, { waitUntil: 'domcontentloaded' })
+  if (pageLink) {
+    await page.goto(`${pageLink}&page=${constactPageCounter}`, { waitUntil: 'domcontentloaded' })
+  } else {
+    await page.goto(`${contacts}&page=${constactPageCounter}`, { waitUntil: 'domcontentloaded' })
+  }
+  
   logger.info(`Opened ${constactPageCounter}/${limit} contact page`)
 }
 
@@ -30,7 +35,7 @@ const getMaxContactPages = async (page) => {
     maxPages = await page.evaluate(maxPagesHandler => maxPagesHandler.textContent, maxPagesHandler)
     logger.info(`Pages ${maxPages}`)
   } catch {
-    maxPages = 10
+    maxPages = 1
     logger.info(`Cannot load max contact pages, set default value ${maxPages}`)
     logger.info(`${maxPages} pages with contacts`)
   } finally {
@@ -51,7 +56,7 @@ const sendFolloups = async (page) => {
   addLog({type: 'info', message: `Follow up messages to send: ${usersToSend.length}`})
 
   for (const user of usersToSend) {
-    if (user.followUpMessage.length > 3 && user.followupWasSend) {
+    if (user.followUpMessage.length > 3 && !user.followupWasSend) {
       await openProfile(page, user.profileLink)
       await openMessageWindow(page)
       await page.waitFor(2000)
@@ -67,9 +72,24 @@ const sendFolloups = async (page) => {
   }
 }
 
+const filterByRegion = async (page, runConfig) => {
+  const {runConfig: { regions }} = runConfig
+  const region = AllRegions.filter(region => region.name === regions[0].name)[0]
+
+  if (regions[0].name) {
+    const regionLink = `${regionSearch[0]}${region.key}${regionSearch[1]}`
+    setContactsWithRegion(regionLink)
+    await page.goto(regionLink)
+  }
+}
+
 const runBot = async (browser, page, runConfig) => {
   const limit = runConfig.runConfig.messagesLimit > 0 ? runConfig.runConfig.messagesLimit : 999
-  await openContacts(page)
+  await filterByRegion(page, runConfig)
+  if (!getContactsWithRegion()) {
+    await openContacts(page)
+  }
+  
   const contactPagesLimit = await getMaxContactPages(page)
   while(await getCounter() < limit) {
     if (constactPageCounter <= contactPagesLimit) {

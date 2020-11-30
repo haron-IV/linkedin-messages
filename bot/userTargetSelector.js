@@ -51,37 +51,12 @@ const mapUsers = async (page) => {
   return selectedUsers
 }
 
-const filterByRegion = async (page, runConfig) => {
-  const {runConfig: { regions }} = runConfig
-  const region = AllRegions.filter(region => region.name === regions[0].name)[0]
-
-  if (regions[0].name) {
-    const regionLink = `${regionSearch[0]}${region.key}${regionSearch[1]}`
-    setContactsWithRegion(regionLink)
-    await page.goto(regionLink)
-  }
-}
-
 const getUsersFromPage = async (page, runConfig) => {
-  await filterByRegion(page, runConfig)
+  // await filterByRegion(page, runConfig)
   await scrollToBottomOfThePage(page)
   const users = await mapUsers(page)
   logger.info('Users mapped')
   return users
-}
-
-const getLocalozatonObj = (localization) => {
-  const loc = localization?.split(/[,.]/)
-  if (loc.length > 2 && loc.length < 4) return {
-    country: loc[3].trim(),
-    city: loc[0].trim(),
-    voivodeship: loc[2].trim()
-  }
-  else return { //nulls here cuz sometimes localization includes other template. Full localization assigned to voivodeship cuz bot looking for voivodeship when filtering users
-    country: null,
-    city: null,
-    voivodeship: localization
-  }
 }
 
 const selectUsersToSendMsg = async (page, runConfig) => {
