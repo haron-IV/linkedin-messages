@@ -61,3 +61,8 @@ downoad ngrok
 download forever
 start api: forever start -a --uid libot index.js
 start ngrok: ./ngrok http 9090 -log=stdout > li_bot_ngork.log &
+
+# build windows local version
+cd ./installation
+sh build.sh
+`build.sh` will put zip with all necesary files 
