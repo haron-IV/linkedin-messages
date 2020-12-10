@@ -42,9 +42,9 @@
         <textarea name="fmsg" id="followup-message" v-model="fmsg"></textarea>
       </div>
 
-      <div class="input-wrapper" v-if="fmsg.length > 3">
+      <div class="input-wrapper" v-if="fmsg && fmsg.length > 3">
         <label for="followup-message-time">Kiedy wysłać follow up?</label>
-        <input name="fmsgT" type="date" id="followup-message-time" :class="{ require: fmsg.length > 3 }" v-model="fmsgT" />
+        <input name="fmsgT" type="date" id="followup-message-time" :class="{ require: fmsg && fmsg.length > 3 }" v-model="fmsgT" />
       </div>
 
       <div class="input-wrapper">
