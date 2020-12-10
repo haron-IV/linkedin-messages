@@ -20,30 +20,23 @@ const mapUsers = async (page) => {
   const selectedUsers = []
 
   for (const user of users) {
-    //TODO: refactorize selecting element
-    const userNameAndContactLvl = await page.evaluate(user => user?.children[0]?.children[0]?.children[0]?.children[1]?.children[0]?.children[0]?.children[0]?.innerText, user)
-    const fullName = deburr(userNameAndContactLvl?.split(' ').slice(0, 2).join())
-    const contactLvl = userNameAndContactLvl?.split(' ').slice(2, userNameAndContactLvl?.split(' ').length)[1]
-    const localization = await page.evaluate(user => user?.children[0]?.children[0]?.children[0]?.children[1]?.children[0]?.children[0]?.children[1]?.children[1]?.innerText, user)
-    const profileHref = await page.evaluate(user => user?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0].getAttribute('href'), user)
-    // console.log('------------------------------------------------------')
-    // console.log(fullName, contactLvl, localization, profileHref)
-    // console.log('------------------------------------------------------')
-    if (fullName, contactLvl, localization, profileHref) {
+    const {_remoteObject: {value: fullName}} = await page.evaluateHandle(user => user.querySelectorAll('div a span')[1]?.innerText, user)
+    const {_remoteObject: {value: profileHref}} = await page.evaluateHandle(user => user.querySelectorAll('div span span a')[0]?.getAttribute('href'), user)
+
+    if (fullName, profileHref) {
       const userObj = {
         fullName,
-        contactLvl,
-        localization,
         profileHref
       }
-      selectedUsers.push(userObj)
-    }
-  }
 
-  for (const user of selectedUsers) {
-    await axios.get(`https://api.genderize.io/?name=${extractNameFromFullName(user.fullName)}`).then(res => {
-      user.gender = res.data.gender
-    }).catch(err => { console.log(err)})
+      await axios.get(`https://api.genderize.io/?name=${extractNameFromFullName(fullName)}`)
+      .then(res => {
+        userObj.gender = res.data.gender
+        selectedUsers.push(userObj)
+      })
+      .catch(err => { console.log(err)})
+      
+    }
   }
 
   logger.info(`users after map: ${selectedUsers.length}`)

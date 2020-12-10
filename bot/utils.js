@@ -110,7 +110,7 @@ const delay = timeout => {
   })
 }
 
-const extractNameFromFullName = (fullName) => fullName?.split(',')[0] ? fullName?.split(',')[0] : null
+const extractNameFromFullName = (fullName) => fullName?.split(' ')[0] ? fullName?.split(' ')[0] : null
 
 let browser = null
 const getBrowser = async () => browser
