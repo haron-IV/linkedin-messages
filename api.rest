@@ -2,7 +2,7 @@ POST http://localhost:9090/auth
 Content-Type: application/json
 
 {
-  "authKey": "767vg0s4",
+  "authKey": "767vg0s4ls",
   "type": "user"
 }
 
