@@ -10,6 +10,7 @@ const el = {
   sendMessageBtn: 'footer div div button[type=submit]',
   maxContactPages: 'div div div button + ul li:last-child button span',
   messageListInChat: 'div > header + div > div > div > ul',
+  profileName: 'section + div > div > div > div > a > div:nth-of-type(2)',
 }
 
 module.exports = el

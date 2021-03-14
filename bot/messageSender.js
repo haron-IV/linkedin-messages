@@ -17,30 +17,20 @@ const openProfile = async (page, profileLink) => {
   logger.info(`Profile openend -> ${profileLink}`)
 }
 
-const checkIfUserAnswered = async page => {
+const checkIfUserAnswered = async (page, profileName) => {
   const messageList = await page.$$(`${messageListInChat} li > div > div > a`)
 
+  if (messageList.length < 1) return false
+
+  let i = 0
   for (const message of messageList) {
-    const userName = await page.evaluate(message => message.querySelector('span').innerText.trim(), message)
-    console.log(userName)
-    // TODO: check this loop and:
-    // 1. get your profile name
-    // 2. compare your name to userName in this loop
-    // 3. if your name isn't the same with 'userName' in each case return true
+    if (i !== 0) {
+      const userName = await page.evaluate(message => message.querySelector('span').innerText.trim(), message)
+      if (userName !== profileName) return true
+      else return false
+    }
+    i++
   }
-
-  // const userAnswered = await page.evaluate(messageList => {
-  //   for (const message of messageList) {
-  //     message
-  //   }
-  // })
-
-  // const messages = await page.evaluate(messageListInChat => {
-  //   const messages = document.querySelector(messageListInChat).children
-  //   for (const message of messages) {
-  //     if (message.querySelector('div > div > a > span')?.innerText.trim() !== 'my name') return true
-  //   }
-  // })
 }
 
 const openMessageWindow = async page => {
@@ -93,12 +83,12 @@ const filterUsedUsers = async (page, runConfig) => {
   return selectedUsers
 }
 
-const messageLoop = async (page, runConfig, limit = 999) => {
+const messageLoop = async (page, runConfig, limit = 999, profileName) => {
   for (const user of await filterUsedUsers(page, runConfig)) {
     if ((await getCounter()) <= limit) {
       await openProfile(page, user.profileHref)
       await openMessageWindow(page)
-      await checkIfUserAnswered(page)
+      await checkIfUserAnswered(page, profileName)
       await sendMessage(page, runConfig.runConfig, user)
       await increaseCounter()
       await page.waitFor(waitTImeAfterMessage)

@@ -60,7 +60,7 @@ const getDateForFollowup = () => {
   return date
 }
 
-const sendFolloups = async page => {
+const sendFolloups = async (page, profileName) => {
   const usersToSend = await getUsersToSendFollowup(getDateForFollowup())
   logger.info(`${usersToSend.length} followup messages to send`)
   addLog({ type: 'info', message: `Follow up messages to send: ${usersToSend.length}` })
@@ -69,7 +69,7 @@ const sendFolloups = async page => {
     if (user.followUpMessage.length > 3 && !user.followupWasSend) {
       await openProfile(page, user.profileLink)
       await openMessageWindow(page)
-      if (!(await checkIfUserAnswered())) {
+      if (!(await checkIfUserAnswered(page, profileName))) {
         await page.waitFor(2000)
         await page.keyboard.type(user.followUpMessage)
         await page.click(sendMessageBtn)
@@ -98,11 +98,9 @@ const filterByRegion = async (page, runConfig) => {
   }
 }
 
-const getYourProfileName = async () => {}
-
-const runBot = async (browser, page, runConfig) => {
+const runBot = async (browser, page, runConfig, profileName) => {
   // TODO: get name of your profile
-  await sendFolloups(page)
+  await sendFolloups(page, profileName)
 
   await filterByRegion(page, runConfig)
   if (!getContactsWithRegion()) {
@@ -113,7 +111,7 @@ const runBot = async (browser, page, runConfig) => {
   while (true) {
     if (constactPageCounter <= contactPagesLimit) {
       console.log('dupa 0')
-      await messageLoop(page, runConfig)
+      await messageLoop(page, runConfig, 999, profileName)
       await nextContactsPage(page, contactPagesLimit)
     }
   }
