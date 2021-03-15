@@ -99,7 +99,6 @@ const filterByRegion = async (page, runConfig) => {
 }
 
 const runBot = async (browser, page, runConfig, profileName) => {
-  // TODO: get name of your profile
   await sendFolloups(page, profileName)
 
   await filterByRegion(page, runConfig)
