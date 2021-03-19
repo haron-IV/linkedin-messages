@@ -27,10 +27,11 @@ const checkIfUserAnswered = async (page, profileName) => {
     if (i !== 0) {
       const userName = await page.evaluate(message => message.querySelector('span').innerText.trim(), message)
       if (userName !== profileName) return true
-      else return false
     }
     i++
   }
+  logger.info(`${userName} already sent you a message.`)
+  return false
 }
 
 const openMessageWindow = async page => {
@@ -88,10 +89,12 @@ const messageLoop = async (page, runConfig, limit = 999, profileName) => {
     if ((await getCounter()) <= limit) {
       await openProfile(page, user.profileHref)
       await openMessageWindow(page)
-      await checkIfUserAnswered(page, profileName)
-      await sendMessage(page, runConfig.runConfig, user)
-      await increaseCounter()
-      await page.waitFor(waitTImeAfterMessage)
+      const shouldSendMsg = !(await checkIfUserAnswered(page, profileName))
+      if (shouldSendMsg) {
+        await sendMessage(page, runConfig.runConfig, user)
+        await increaseCounter()
+        await page.waitFor(waitTImeAfterMessage)
+      }
     } else {
       logger.info('Message limit reached.')
       return
