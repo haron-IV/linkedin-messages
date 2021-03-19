@@ -69,7 +69,8 @@ const sendFolloups = async (page, profileName) => {
     if (user.followUpMessage.length > 3 && !user.followupWasSend) {
       await openProfile(page, user.profileLink)
       await openMessageWindow(page)
-      if (!(await checkIfUserAnswered(page, profileName))) {
+      const shouldSendMsg = !(await checkIfUserAnswered(page, profileName))
+      if (shouldSendMsg) {
         await page.waitFor(2000)
         await page.keyboard.type(user.followUpMessage)
         await page.click(sendMessageBtn)
