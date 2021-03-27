@@ -18,19 +18,22 @@ const openProfile = async (page, profileLink) => {
 }
 
 const checkIfUserAnswered = async (page, profileName) => {
-  const messageList = await page.$$(`${messageListInChat} li > div > div > a`)
+  await page.waitFor(5000)
+  await page.waitForSelector(messageListInChat)
+  const messageOwners = await page.evaluate(
+    messageListInChat =>
+      [...document.querySelectorAll(`${messageListInChat} > li > div > div > a`)].map(el => el.querySelector('span').innerText.trim()),
+    messageListInChat
+  )
 
-  if (messageList.length < 1) return false
+  if (messageOwners.length < 1) return false
 
-  let i = 0
-  for (const message of messageList) {
-    if (i !== 0) {
-      const userName = await page.evaluate(message => message.querySelector('span').innerText.trim(), message)
-      if (userName !== profileName) return true
+  for (const [i, messageOwner] of messageOwners.entries()) {
+    if (i !== 0 && messageOwner !== profileName) {
+      logger.info(`${messageOwner} already sent you a message.`)
+      return true
     }
-    i++
   }
-  logger.info(`${userName} already sent you a message.`)
   return false
 }
 
@@ -85,16 +88,21 @@ const filterUsedUsers = async (page, runConfig) => {
 }
 
 const messageLoop = async (page, runConfig, limit = 999, profileName) => {
-  for (const user of await filterUsedUsers(page, runConfig)) {
-    if ((await getCounter()) <= limit) {
+  const users = await filterUsedUsers(page, runConfig)
+  for (const user of users) {
+    const counter = await getCounter()
+    if (counter <= limit) {
       await openProfile(page, user.profileHref)
       await openMessageWindow(page)
       const shouldSendMsg = !(await checkIfUserAnswered(page, profileName))
       if (shouldSendMsg) {
         await sendMessage(page, runConfig.runConfig, user)
-        await increaseCounter()
         await page.waitFor(waitTImeAfterMessage)
+      } else {
+        await page.click(messageCloseBtn)
       }
+
+      await increaseCounter()
     } else {
       logger.info('Message limit reached.')
       return
