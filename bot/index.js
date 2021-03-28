@@ -33,7 +33,11 @@ const isLIopened = async page => {
   }
 }
 
-const getYourProfileName = async page => await page.evaluate(profileName => document.querySelector(profileName).innerText.trim(), profileName)
+const getYourProfileName = async page => {
+  await page.waitFor(5000)
+  const name = await page.evaluate(profileName => document.querySelector(profileName).innerText.trim(), profileName)
+  return name
+}
 
 const start = async runConfig => {
   try {
@@ -44,8 +48,8 @@ const start = async runConfig => {
 
     await openLI(b.page)
     await login(b.page, runConfig)
-    const profileName = await getYourProfileName(b.page)
-    await runBot(b.browser, b.page, runConfig, profileName)
+    const name = await getYourProfileName(b.page)
+    await runBot(b.browser, b.page, runConfig, name)
   } catch (err) {
     // TODO: close bot and restart it
 

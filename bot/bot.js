@@ -2,6 +2,7 @@ const {
   cfg: {
     url: { contacts },
   },
+  stopBot,
 } = require('./utils')
 let {
   cfg: {
@@ -61,7 +62,8 @@ const getDateForFollowup = () => {
 }
 
 const sendFolloups = async (page, profileName) => {
-  const usersToSend = await getUsersToSendFollowup(getDateForFollowup())
+  const followupDate = getDateForFollowup()
+  const usersToSend = await getUsersToSendFollowup(followupDate)
   logger.info(`${usersToSend.length} followup messages to send`)
   addLog({ type: 'info', message: `Follow up messages to send: ${usersToSend.length}` })
 
@@ -73,15 +75,17 @@ const sendFolloups = async (page, profileName) => {
       if (shouldSendMsg) {
         await page.waitFor(2000)
         await page.keyboard.type(user.followUpMessage)
+        await page.waitFor(2000)
         await page.click(sendMessageBtn)
-        await markFollowmessageAsSend(user._id)
         await page.waitFor(3000)
         await page.click(messageCloseBtn)
         logger.info(`Follow up message send to: ${user.fullName}`)
         addLog({ type: 'info', message: `Follow up message send to: ${user.fullName}` })
       } else {
+        await page.click(messageCloseBtn)
         logger.info(`Follow up message already sent to: ${user.fullName}`)
       }
+      await markFollowmessageAsSend(user._id)
     }
   }
 }
@@ -109,8 +113,12 @@ const runBot = async (browser, page, runConfig, profileName) => {
 
   const contactPagesLimit = await getMaxContactPages(page)
   while (true) {
-    if (constactPageCounter <= contactPagesLimit) {
-      console.log('dupa 0')
+    if (constactPageCounter === contactPagesLimit) {
+      await messageLoop(page, runConfig, 999, profileName)
+      logger.info('No more users to receive your message, browser closed.')
+      browser.close()
+      await stopBot()
+    } else if (constactPageCounter <= contactPagesLimit && contactPagesLimit !== 1) {
       await messageLoop(page, runConfig, 999, profileName)
       await nextContactsPage(page, contactPagesLimit)
     }
