@@ -75,8 +75,8 @@ const sendFolloups = async (page, profileName) => {
       if (shouldSendMsg) {
         await page.waitFor(2000)
         await page.keyboard.type(user.followUpMessage)
-        await page.click(sendMessageBtn) //TODO: this not sending the message
-        await markFollowmessageAsSend(user._id)
+        await page.waitFor(2000)
+        await page.click(sendMessageBtn)
         await page.waitFor(3000)
         await page.click(messageCloseBtn)
         logger.info(`Follow up message send to: ${user.fullName}`)
@@ -85,6 +85,7 @@ const sendFolloups = async (page, profileName) => {
         await page.click(messageCloseBtn)
         logger.info(`Follow up message already sent to: ${user.fullName}`)
       }
+      await markFollowmessageAsSend(user._id)
     }
   }
 }
