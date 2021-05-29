@@ -28,9 +28,9 @@ export default {
   },
   setup(_, { root: { $axios, $store }} ) {
     const showInterface = ref(false)
-    if( getCookie()[0] === 'bot_auth=true') {
+    //if( getCookie()[0] === 'bot_auth=true') {
       showInterface.value = true
-    }
+    //}
 
     const user = computed(() => $store.state.user )
     const runConfig = computed(() => {
