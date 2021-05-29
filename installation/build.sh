@@ -1,3 +1,7 @@
+# you have to create in root of the project /linkedin-bot to build it
+# uncomment one option for build if MacOs or Ubuntu
+# create bot.zip on your desktop
+
 #clear old files
 cd ..
 rm -rf ./linkedin-bot/*
@@ -13,7 +17,7 @@ cp -r ./bot ./linkedin-bot/bot
 mkdir ./linkedin-bot/logs
 touch ./linkedin-bot/logs/logs.log
 
-# vopy window installation files
+# copy window installation files
 cp ./installation/bot.bat ./linkedin-bot
 cp ./installation/install.bat ./linkedin-bot
 cp ./installation/interface.bat ./linkedin-bot
@@ -30,6 +34,8 @@ echo $KEY >> ./linkedin-bot/auth-key.txt
 
 # create zip and clear project
 zip -vr bot.zip ./linkedin-bot
-rm /Users/$USER/Desktop/bot.zip
-mv bot.zip /Users/$USER/Desktop
+# rm /Users/$USER/Desktop/bot.zip # MacOS
+# mv bot.zip /Users/$USER/Desktop # MacOS
+rm /home/$USER/Desktop/bot.zip # Ubuntu
+mv bot.zip /home/$USER/Desktop # Ubuntu
 rm -rf ./linkedin-bot/*
